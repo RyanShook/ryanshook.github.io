@@ -1,0 +1,31 @@
+# robots.txt for ryanshook.org
+# Following Google's recommendations for professional portfolio websites
+
+User-agent: *
+Allow: /
+
+# Allow all search engines to crawl the entire site
+Allow: /images/
+Allow: /assets/
+
+# Block access to sensitive or unnecessary files
+Disallow: /assets/sass/
+Disallow: /.git/
+Disallow: /*.log
+Disallow: /story-template/
+
+# Prevent crawling of development and backup files
+Disallow: /*.bak
+Disallow: /*.tmp
+Disallow: /*~
+Disallow: /.DS_Store
+
+# Allow crawling of important resources for SEO
+Allow: /assets/css/
+Allow: /assets/js/
+
+# Sitemap location
+Sitemap: https://ryanshook.org/sitemap.xml
+
+# Crawl-delay (optional - helps with server load)
+Crawl-delay: 1
