@@ -1,0 +1,227 @@
+/* Dark Mode Override for Story Template */
+/* Matches blog aesthetic with dark backgrounds and light text */
+
+/* Base dark theme */
+body {
+	background: #1a1a1a !important;
+	color: #e8e8e8 !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+	color: #ffffff !important;
+}
+
+/* Links */
+a {
+	color: #5eb3c4 !important; /* Adjusted to match the cyan accent */
+}
+
+a:hover {
+	color: #47D3E5 !important;
+}
+
+/* Sections and containers */
+#wrapper {
+	background: #1a1a1a !important;
+}
+
+.wrapper {
+	background: #1a1a1a !important;
+}
+
+/* Banner/Hero sections */
+#banner {
+	background-color: #0d0d0d !important;
+}
+
+/* Spotlight sections */
+.spotlight {
+	background: #242424 !important;
+}
+
+.spotlight .content {
+	background: #242424 !important;
+	color: #e8e8e8 !important;
+}
+
+/* Gallery items */
+.gallery article {
+	background: #2a2a2a !important;
+}
+
+.gallery article .image {
+	background: #1a1a1a !important;
+}
+
+/* Items/Cards */
+.items article {
+	background: #242424 !important;
+	border-color: #3a3a3a !important;
+}
+
+/* Buttons */
+button, .button {
+	background-color: #2a2a2a !important;
+	color: #e8e8e8 !important;
+	border-color: #3a3a3a !important;
+}
+
+button:hover, .button:hover {
+	background-color: #47D3E5 !important;
+	color: #000000 !important;
+	border-color: #47D3E5 !important;
+}
+
+button.primary, .button.primary {
+	background-color: #47D3E5 !important;
+	color: #000000 !important;
+}
+
+button.primary:hover, .button.primary:hover {
+	background-color: #5eb3c4 !important;
+}
+
+/* Forms */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+input[type="search"],
+input[type="url"],
+select,
+textarea {
+	background: #242424 !important;
+	border-color: #3a3a3a !important;
+	color: #e8e8e8 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+	border-color: #47D3E5 !important;
+	background: #2a2a2a !important;
+}
+
+/* Footer */
+#footer {
+	background: #0d0d0d !important;
+	color: #999999 !important;
+}
+
+#footer a {
+	color: #5eb3c4 !important;
+}
+
+#footer a:hover {
+	color: #47D3E5 !important;
+}
+
+/* Code blocks */
+code {
+	background: #2a2a2a !important;
+	border-color: #3a3a3a !important;
+	color: #e8e8e8 !important;
+}
+
+pre {
+	background: #1a1a1a !important;
+	border-color: #3a3a3a !important;
+	color: #e8e8e8 !important;
+}
+
+/* Blockquotes */
+blockquote {
+	border-left-color: #47D3E5 !important;
+	background: #242424 !important;
+	color: #cccccc !important;
+}
+
+/* Tables */
+table {
+	background: #1a1a1a !important;
+}
+
+table thead {
+	background: #2a2a2a !important;
+	color: #ffffff !important;
+	border-bottom-color: #3a3a3a !important;
+}
+
+table tbody tr {
+	border-color: #3a3a3a !important;
+}
+
+table tbody tr:nth-child(2n+1) {
+	background-color: #242424 !important;
+}
+
+/* Lists */
+ul.alt li {
+	border-top-color: #3a3a3a !important;
+}
+
+/* Icons */
+ul.icons li a {
+	background: #2a2a2a !important;
+	color: #e8e8e8 !important;
+	border-color: #3a3a3a !important;
+}
+
+ul.icons li a:hover {
+	background: #47D3E5 !important;
+	color: #000000 !important;
+	border-color: #47D3E5 !important;
+}
+
+/* Actions */
+ul.actions li .button {
+	background-color: #2a2a2a !important;
+	color: #e8e8e8 !important;
+}
+
+ul.actions li .button:hover {
+	background-color: #47D3E5 !important;
+	color: #000000 !important;
+}
+
+/* Special elements */
+.box {
+	background: #242424 !important;
+	border-color: #3a3a3a !important;
+}
+
+hr {
+	border-bottom-color: #3a3a3a !important;
+}
+
+/* Banner specific */
+#banner h1, #banner h2, #banner p {
+	color: #ffffff !important;
+}
+
+/* Image overlays */
+.image.fit {
+	background: #1a1a1a !important;
+}
+
+/* Special text colors */
+.alt {
+	color: #999999 !important;
+}
+
+/* Selection */
+::selection {
+	background: #47D3E5 !important;
+	color: #000000 !important;
+}
+
+::-moz-selection {
+	background: #47D3E5 !important;
+	color: #000000 !important;
+}
+
+/* Smooth transitions for hover states */
+* {
+	transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
