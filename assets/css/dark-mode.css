@@ -181,16 +181,24 @@ ul.alt li {
 }
 
 /* Icons - Larger size with circular borders */
-ul.icons li a {
+ul.icons li a,
+ul.icons li a.icon,
+a.icon.style2 {
 	color: #e8e8e8 !important;
+	background: none !important;
+	background-color: transparent !important;
 }
 
-ul.icons li a:hover {
+ul.icons li a:hover,
+a.icon.style2:hover {
 	color: #47D3E5 !important;
+	background: none !important;
+	background-color: transparent !important;
 }
 
 /* Make icons bigger with clean circular styling */
-.icon.style2:before {
+.icon.style2:before,
+a.icon.style2:before {
 	height: 4em !important;
 	width: 4em !important;
 	line-height: 4em !important;
@@ -198,6 +206,7 @@ ul.icons li a:hover {
 	font-size: 1.5em !important;
 	box-shadow: inset 0 0 0 2px #3a3a3a !important;
 	background: transparent !important;
+	background-color: transparent !important;
 }
 
 a.icon.style2:hover:before {
