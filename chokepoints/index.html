@@ -1512,15 +1512,19 @@
         .attr("font-size", cp.type === "critical" ? 9 : 8)
         .attr("letter-spacing", "0.05em")
         .attr("text-anchor", cp.anchor)
+        .attr("style", "cursor:pointer")
         .text(cp.name);
 
       // Larger invisible hit area for easier hovering
       g.append("circle")
         .attr("cx", 0).attr("cy", 0).attr("r", 18)
-        .attr("fill", "transparent")
-        .on("mouseenter", function(event) { showTooltip(cp, event); })
-        .on("mousemove", function(event) { showTooltip(cp, event); })
-        .on("mouseleave", hideTooltip);
+        .attr("fill", "transparent");
+
+      // Events on entire group so dot + label are both interactive
+      g.on("mouseenter", function(event) { showTooltip(cp, event); })
+       .on("mousemove", function(event) { showTooltip(cp, event); })
+       .on("mouseleave", hideTooltip)
+       .on("click", function(event) { showTooltip(cp, event); });
     });
 
     // Secondary chokepoints and bypass routes
@@ -1564,15 +1568,19 @@
         .attr("font-size", 8)
         .attr("letter-spacing", "0.05em")
         .attr("text-anchor", sp.anchor)
+        .attr("style", "cursor:pointer")
         .text(sp.name);
 
       // Hit area for hover tooltip
       g.append("circle")
         .attr("cx", 0).attr("cy", 0).attr("r", 14)
-        .attr("fill", "transparent")
-        .on("mouseenter", function(event) { showTooltip(sp, event); })
-        .on("mousemove", function(event) { showTooltip(sp, event); })
-        .on("mouseleave", hideTooltip);
+        .attr("fill", "transparent");
+
+      // Events on entire group so dot + label are both interactive
+      g.on("mouseenter", function(event) { showTooltip(sp, event); })
+       .on("mousemove", function(event) { showTooltip(sp, event); })
+       .on("mouseleave", hideTooltip)
+       .on("click", function(event) { showTooltip(sp, event); });
     });
 
     // Card hover → highlight map dot + show mini-map
@@ -1712,8 +1720,7 @@
         }
       }, { passive: true });
 
-      // Initial check
-      updateOnScroll();
+      // Don't show mini-map until user has scrolled past the main map
     } else {
       // Desktop: hover-driven
       document.querySelectorAll(".chokepoint").forEach(function(card) {
