@@ -24,7 +24,7 @@
 <meta name="twitter:site" content="@ryanshook">
 <meta name="twitter:image" content="https://ryanshook.org/images/ryan.jpg">
 
-<!-- Favicon (inline SVG compass rose) -->
+<!-- Favicon -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%230a0c10' stroke='%23c8a96e' stroke-width='1.5'/><path d='M16 6 L16 26 M16 6 L12 12 M16 6 L20 12' stroke='%23c8a96e' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='16' cy='26' r='2' fill='%23c8a96e'/></svg>" type="image/svg+xml">
 
 <!-- Structured Data -->
@@ -68,7 +68,6 @@
     --accent2: #4a9eff;
     --danger: #ff4d4d;
     --danger-dim: rgba(255,77,77,0.15);
-    --success: #4ade80;
   }
 
   body {
@@ -98,21 +97,13 @@
     padding: 0 2rem;
     position: relative;
     z-index: 1;
+    overflow-x: hidden;
   }
 
   /* Header */
   header {
     padding: 2rem 0 1.5rem;
     margin-bottom: 1.5rem;
-  }
-
-  .eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1rem;
   }
 
   h1 {
@@ -223,7 +214,7 @@
 
   .chokepoints-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
@@ -283,18 +274,6 @@
     border: 1px solid rgba(255,77,77,0.25);
   }
 
-  .tag-disrupted {
-    background: rgba(255,170,0,0.12);
-    color: #ffaa00;
-    border: 1px solid rgba(255,170,0,0.25);
-  }
-
-  .tag-bypass {
-    background: rgba(74,222,128,0.1);
-    color: var(--success);
-    border: 1px solid rgba(74,222,128,0.2);
-  }
-
   .tag-controlled {
     background: rgba(74,158,255,0.1);
     color: var(--accent2);
@@ -308,7 +287,7 @@
   }
 
   .secondary-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   }
 
   .secondary-card .chokepoint-desc {
@@ -334,6 +313,7 @@
   .chokepoint-stats {
     display: flex;
     gap: 1.5rem;
+    flex-wrap: wrap;
   }
 
   .cp-stat {
@@ -350,7 +330,6 @@
 
   .cp-stat-val.danger { color: var(--danger); }
   .cp-stat-val.blue { color: var(--accent2); }
-  .cp-stat-val.green { color: var(--success); }
   .cp-stat-val.gold { color: var(--accent); }
 
   .cp-stat-label {
@@ -367,7 +346,7 @@
 
   .insight-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
     gap: 1rem;
   }
 
@@ -386,6 +365,7 @@
     margin-bottom: 0.75rem;
     background: linear-gradient(135deg, rgba(200,169,110,0.3), rgba(200,169,110,0.05));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
@@ -410,7 +390,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: gap;
+    flex-wrap: wrap;
     gap: 1rem;
   }
 
@@ -438,24 +418,6 @@
 
   .chokepoint-dot.critical circle.inner {
     fill: var(--danger);
-  }
-
-  .chokepoint-dot.disrupted circle.outer {
-    fill: rgba(255,170,0,0.15);
-    stroke: rgba(255,170,0,0.5);
-  }
-
-  .chokepoint-dot.disrupted circle.inner {
-    fill: #ffaa00;
-  }
-
-  .chokepoint-dot.bypass circle.outer {
-    fill: rgba(74,222,128,0.1);
-    stroke: rgba(74,222,128,0.3);
-  }
-
-  .chokepoint-dot.bypass circle.inner {
-    fill: var(--success);
   }
 
   .chokepoint-dot.controlled circle.outer {
@@ -801,8 +763,8 @@
         </div>
       </div>
       <div class="map-zoom">
-        <button id="zoom-in" title="Zoom in">+</button>
-        <button id="zoom-out" title="Zoom out">−</button>
+        <button type="button" id="zoom-in" title="Zoom in">+</button>
+        <button type="button" id="zoom-out" title="Zoom out">−</button>
       </div>
       <div class="map-legend">
         <div class="legend-item"><div class="legend-dot" style="background:#4a9eff;"></div>Primary<div class="legend-tip"><div class="legend-tip-name">Primary Chokepoint</div><div class="legend-tip-label">No cost-effective alternative</div><div class="legend-tip-desc">Straits and canals where closure forces massive detours or cuts off access to entire seas and resource regions. These are the highest-consequence bottlenecks in global trade.</div></div></div>
@@ -1151,7 +1113,6 @@
   var typeColors = {
     critical: { inner: "#ff4d4d", outerFill: "rgba(255,77,77,0.15)", outerStroke: "rgba(255,77,77,0.5)" },
     controlled: { inner: "#4a9eff", outerFill: "rgba(74,158,255,0.1)", outerStroke: "rgba(74,158,255,0.4)" },
-    bypass: { inner: "#4ade80", outerFill: "rgba(74,222,128,0.1)", outerStroke: "rgba(74,222,128,0.3)" },
     secondary: { inner: "#c8a96e", outerFill: "rgba(200,169,110,0.08)", outerStroke: "rgba(200,169,110,0.25)" }
   };
 
@@ -1526,10 +1487,9 @@
 
     // Secondary chokepoints and bypass routes
     var secColors = typeColors.secondary;
-    var bypColors = typeColors.bypass;
     secondaryPoints.forEach(function(sp) {
       var pos = projection([sp.lng, sp.lat]);
-      var colors = sp.bypass ? bypColors : secColors;
+      var colors = secColors;
       var g = svg.append("g")
         .attr("transform", "translate(" + pos[0] + "," + pos[1] + ")")
         .attr("class", "chokepoint-dot")
