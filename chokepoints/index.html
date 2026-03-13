@@ -56,6 +56,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { overflow-x: hidden; }
 
   :root {
     --bg: #0a0c10;
@@ -600,10 +601,10 @@
 
   .legend-item .legend-tip {
     display: none;
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 0;
-    width: 280px;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    width: min(280px, 90vw);
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -611,8 +612,7 @@
     text-transform: none;
     letter-spacing: 0;
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    z-index: 10;
-    pointer-events: none;
+    z-index: 1000;
   }
 
   .legend-tip-name {
@@ -638,8 +638,10 @@
     line-height: 1.65;
   }
 
-  .legend-item:hover .legend-tip {
-    display: block;
+  @media (hover: hover) {
+    .legend-item:hover .legend-tip {
+      display: block;
+    }
   }
 
   .legend-dot {
@@ -667,14 +669,14 @@
 
   /* Map tooltip */
   .map-tooltip {
-    position: absolute;
-    z-index: 10;
+    position: fixed;
+    z-index: 1000;
     pointer-events: none;
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 12px;
     overflow: hidden;
-    width: 300px;
+    width: min(300px, 90vw);
     opacity: 0;
     transition: opacity 0.2s;
     box-shadow: 0 8px 32px rgba(0,0,0,0.6);
@@ -753,15 +755,6 @@
     <div class="map-frame">
       <div class="map-label">GLOBAL CHOKEPOINT MAP</div>
       <div id="world-map"></div>
-      <div class="map-tooltip" id="map-tooltip">
-        <img class="map-tooltip-img" id="tooltip-img" src="" alt="">
-        <div class="map-tooltip-body">
-          <div class="map-tooltip-name" id="tooltip-name"></div>
-          <div class="map-tooltip-region" id="tooltip-region"></div>
-          <div class="map-tooltip-desc" id="tooltip-desc"></div>
-          <div class="map-tooltip-stats" id="tooltip-stats"></div>
-        </div>
-      </div>
       <div class="map-zoom">
         <button type="button" id="zoom-in" title="Zoom in">+</button>
         <button type="button" id="zoom-out" title="Zoom out">−</button>
@@ -1051,6 +1044,16 @@
     <div class="footer-note">Sources: EIA, IEA, UNCTAD, Wikipedia</div>
   </footer>
 
+</div>
+
+<div class="map-tooltip" id="map-tooltip">
+  <img class="map-tooltip-img" id="tooltip-img" src="" alt="">
+  <div class="map-tooltip-body">
+    <div class="map-tooltip-name" id="tooltip-name"></div>
+    <div class="map-tooltip-region" id="tooltip-region"></div>
+    <div class="map-tooltip-desc" id="tooltip-desc"></div>
+    <div class="map-tooltip-stats" id="tooltip-stats"></div>
+  </div>
 </div>
 
 <div class="mini-map" id="mini-map">
@@ -1380,16 +1383,23 @@
     tooltipDesc.textContent = cp.desc;
     buildStats(cp.stats);
 
-    var rect = mapFrame.getBoundingClientRect();
-    var x = event.clientX - rect.left + 16;
-    var y = event.clientY - rect.top - 80;
+    var tw = Math.min(300, window.innerWidth * 0.9);
+    var isMobile = window.innerWidth < 600;
 
-    if (x + 320 > rect.width) x = event.clientX - rect.left - 316;
-    if (y + 300 > rect.height) y = rect.height - 310;
-    if (y < 10) y = 10;
-
-    tooltip.style.left = x + "px";
-    tooltip.style.top = y + "px";
+    if (isMobile) {
+      // Center horizontally, position near top of viewport
+      tooltip.style.left = ((window.innerWidth - tw) / 2) + "px";
+      tooltip.style.top = "10px";
+    } else {
+      var x = event.clientX + 16;
+      var y = event.clientY - 80;
+      if (x + tw > window.innerWidth - 10) x = event.clientX - tw - 16;
+      if (y + 300 > window.innerHeight - 10) y = window.innerHeight - 310;
+      if (y < 10) y = 10;
+      if (x < 10) x = 10;
+      tooltip.style.left = x + "px";
+      tooltip.style.top = y + "px";
+    }
     tooltip.classList.add("visible");
   }
 
@@ -1590,23 +1600,80 @@
       miniMap.classList.remove("visible");
     }
 
-    document.querySelectorAll(".chokepoint").forEach(function(card) {
-      var nameEl = card.querySelector(".chokepoint-name");
-      if (!nameEl) return;
-      var name = nameEl.textContent.trim();
+    // Legend tip: tap-to-toggle on mobile, position above legend bar
+    document.querySelectorAll(".legend-item").forEach(function(item) {
+      var tip = item.querySelector(".legend-tip");
+      if (!tip) return;
 
-      card.addEventListener("mouseenter", function() {
-        var dot = svgEl.select('[data-name="' + name + '"]');
-        if (!dot.empty()) dot.classed("highlight", true);
-        showMiniMap(name);
-      });
-
-      card.addEventListener("mouseleave", function() {
-        var dot = svgEl.select('[data-name="' + name + '"]');
-        if (!dot.empty()) dot.classed("highlight", false);
-        hideMiniMap();
+      // Position on hover (desktop) and click (mobile)
+      function positionTip() {
+        var rect = item.getBoundingClientRect();
+        tip.style.top = (rect.top - 10) + "px";
+      }
+      item.addEventListener("mouseenter", positionTip);
+      item.addEventListener("click", function(e) {
+        e.stopPropagation();
+        var wasVisible = tip.style.display === "block";
+        document.querySelectorAll(".legend-tip").forEach(function(t) { t.style.display = "none"; });
+        if (!wasVisible) {
+          positionTip();
+          tip.style.display = "block";
+        }
       });
     });
+    document.addEventListener("click", function() {
+      document.querySelectorAll(".legend-tip").forEach(function(t) { t.style.display = "none"; });
+    });
+
+    var isMobile = window.matchMedia("(hover: none)").matches;
+    var activeHighlight = null;
+
+    if (isMobile) {
+      // Scroll-driven: show mini-map when card enters viewport
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          var card = entry.target;
+          var nameEl = card.querySelector(".chokepoint-name");
+          if (!nameEl) return;
+          var name = nameEl.textContent.trim();
+
+          if (entry.isIntersecting) {
+            // Clear previous highlight
+            if (activeHighlight) {
+              var prevDot = svgEl.select('[data-name="' + activeHighlight + '"]');
+              if (!prevDot.empty()) prevDot.classed("highlight", false);
+            }
+            activeHighlight = name;
+            var dot = svgEl.select('[data-name="' + name + '"]');
+            if (!dot.empty()) dot.classed("highlight", true);
+            showMiniMap(name);
+          }
+        });
+      }, { rootMargin: "-30% 0px -30% 0px", threshold: 0.1 });
+
+      document.querySelectorAll(".chokepoint").forEach(function(card) {
+        observer.observe(card);
+      });
+    } else {
+      // Desktop: hover-driven
+      document.querySelectorAll(".chokepoint").forEach(function(card) {
+        var nameEl = card.querySelector(".chokepoint-name");
+        if (!nameEl) return;
+        var name = nameEl.textContent.trim();
+
+        card.addEventListener("mouseenter", function() {
+          var dot = svgEl.select('[data-name="' + name + '"]');
+          if (!dot.empty()) dot.classed("highlight", true);
+          showMiniMap(name);
+        });
+
+        card.addEventListener("mouseleave", function() {
+          var dot = svgEl.select('[data-name="' + name + '"]');
+          if (!dot.empty()) dot.classed("highlight", false);
+          hideMiniMap();
+        });
+      });
+    }
   });
 })();
 </script>
