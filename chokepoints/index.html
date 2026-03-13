@@ -24,6 +24,11 @@
 <meta name="twitter:site" content="@ryanshook">
 <meta name="twitter:image" content="https://ryanshook.org/images/ryan.jpg">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://d3js.org">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+
 <!-- Favicon -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%230a0c10' stroke='%23c8a96e' stroke-width='1.5'/><path d='M16 6 L16 26 M16 6 L12 12 M16 6 L20 12' stroke='%23c8a96e' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='16' cy='26' r='2' fill='%23c8a96e'/></svg>" type="image/svg+xml">
 
@@ -741,20 +746,22 @@
 </style>
 </head>
 <body>
-<div class="container">
+<main class="container">
 
+  <!-- Page Header: Title and description for the chokepoints reference guide -->
   <header>
     <h1>Global Maritime<br><em>Chokepoints</em></h1>
     <div class="header-meta">
-      <div class="date-stamp">A reference guide to the world's most strategic waterways</div>
+      <p class="date-stamp">A reference guide to the world's most strategic waterways</p>
     </div>
   </header>
 
-  <!-- World Map -->
-  <div class="map-section">
+  <!-- Interactive World Map: D3.js SVG map showing all 18 chokepoints with zoom/pan controls -->
+  <!-- Map dots are color-coded: red = impacted, blue = open/controlled, gold = secondary -->
+  <section class="map-section" aria-label="Interactive world map of maritime chokepoints">
     <div class="map-frame">
       <div class="map-label">GLOBAL CHOKEPOINT MAP</div>
-      <div id="world-map"></div>
+      <div id="world-map" role="img" aria-label="World map showing 18 maritime chokepoints with interactive hover details"></div>
       <div class="map-zoom">
         <button type="button" id="zoom-in" title="Zoom in">+</button>
         <button type="button" id="zoom-out" title="Zoom out">−</button>
@@ -764,14 +771,16 @@
         <div class="legend-item"><div class="legend-dot" style="background:#c8a96e;opacity:0.6;"></div>Secondary<div class="legend-tip"><div class="legend-tip-name">Secondary Chokepoint</div><div class="legend-tip-label">Alternatives exist</div><div class="legend-tip-desc">Passages that have bypass routes, but disruption would still cause notable detours, added shipping costs, and supply chain delays across affected regions.</div></div></div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Chokepoints detail -->
-  <div class="section-label">Chokepoint analysis</div>
+  <!-- Primary Chokepoints: 9 critical straits and canals with detailed analysis -->
+  <!-- Each card includes satellite imagery, geographic context, strategic significance, and key statistics -->
+  <section aria-label="Primary chokepoint analysis">
+  <h2 class="section-label">Chokepoint analysis</h2>
   <div class="chokepoints-grid">
 
-    <div class="chokepoint">
-      <img class="chokepoint-img" src="images/hormuz.jpg" alt="Strait of Hormuz satellite image">
+    <article class="chokepoint">
+      <img class="chokepoint-img" src="images/hormuz.jpg" alt="Strait of Hormuz satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Strait of Hormuz</div>
         <span class="chokepoint-tag tag-critical">IMPACTED</span>
@@ -783,10 +792,10 @@
         <div class="cp-stat"><div class="cp-stat-val danger">21 mi</div><div class="cp-stat-label">width at narrowest</div></div>
         <div class="cp-stat"><div class="cp-stat-val">No maritime bypass</div><div class="cp-stat-label">bypass route</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint">
-      <img class="chokepoint-img" src="images/malacca.jpg" alt="Strait of Malacca satellite image">
+    <article class="chokepoint">
+      <img class="chokepoint-img" src="images/malacca.jpg" alt="Strait of Malacca satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Strait of Malacca</div>
         <span class="chokepoint-tag tag-controlled">OPEN</span>
@@ -798,10 +807,10 @@
         <div class="cp-stat"><div class="cp-stat-val blue">~94,000</div><div class="cp-stat-label">ships/year</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Lombok</div><div class="cp-stat-label">bypass route</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint">
-      <img class="chokepoint-img" src="images/suez.jpg" alt="Suez Canal satellite image">
+    <article class="chokepoint">
+      <img class="chokepoint-img" src="images/suez.jpg" alt="Suez Canal satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Suez Canal</div>
         <span class="chokepoint-tag tag-controlled">OPEN</span>
@@ -813,10 +822,10 @@
         <div class="cp-stat"><div class="cp-stat-val blue">~20,000</div><div class="cp-stat-label">ships/year</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Cape of Good Hope</div><div class="cp-stat-label">bypass route</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint">
-      <img class="chokepoint-img" src="images/bab-el-mandeb.jpg" alt="Bab el-Mandeb satellite image">
+    <article class="chokepoint">
+      <img class="chokepoint-img" src="images/bab-el-mandeb.jpg" alt="Bab el-Mandeb satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Bab el-Mandeb</div>
         <span class="chokepoint-tag tag-controlled">OPEN</span>
@@ -828,10 +837,10 @@
         <div class="cp-stat"><div class="cp-stat-val blue">18 mi</div><div class="cp-stat-label">width</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Cape of Good Hope</div><div class="cp-stat-label">bypass route</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint">
-      <img class="chokepoint-img" src="images/panama.jpg" alt="Panama Canal satellite image">
+    <article class="chokepoint">
+      <img class="chokepoint-img" src="images/panama.jpg" alt="Panama Canal satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Panama Canal</div>
         <span class="chokepoint-tag tag-controlled">OPEN</span>
@@ -843,10 +852,10 @@
         <div class="cp-stat"><div class="cp-stat-val blue">~14,000</div><div class="cp-stat-label">ships/year</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Drake Passage</div><div class="cp-stat-label">bypass route</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint">
-      <img class="chokepoint-img" src="images/bosphorus.jpg" alt="Bosphorus satellite image">
+    <article class="chokepoint">
+      <img class="chokepoint-img" src="images/bosphorus.jpg" alt="Bosphorus satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Bosphorus</div>
         <span class="chokepoint-tag tag-controlled">CONTROLLED</span>
@@ -858,10 +867,10 @@
         <div class="cp-stat"><div class="cp-stat-val blue">Turkey</div><div class="cp-stat-label">controller</div></div>
         <div class="cp-stat"><div class="cp-stat-val">None</div><div class="cp-stat-label">bypass route</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint">
-      <img class="chokepoint-img" src="images/gibraltar.jpg" alt="Strait of Gibraltar satellite image">
+    <article class="chokepoint">
+      <img class="chokepoint-img" src="images/gibraltar.jpg" alt="Strait of Gibraltar satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Strait of Gibraltar</div>
         <span class="chokepoint-tag tag-controlled">OPEN</span>
@@ -873,10 +882,10 @@
         <div class="cp-stat"><div class="cp-stat-val blue">14km</div><div class="cp-stat-label">narrowest point</div></div>
         <div class="cp-stat"><div class="cp-stat-val">None</div><div class="cp-stat-label">bypass route</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint">
-      <img class="chokepoint-img" src="images/cape-good-hope.jpg" alt="Cape of Good Hope satellite image">
+    <article class="chokepoint">
+      <img class="chokepoint-img" src="images/cape-good-hope.jpg" alt="Cape of Good Hope satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Cape of Good Hope</div>
         <span class="chokepoint-tag tag-controlled">OPEN</span>
@@ -888,10 +897,10 @@
         <div class="cp-stat"><div class="cp-stat-val blue">+12 days</div><div class="cp-stat-label">added transit</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Suez / Bab el-Mandeb</div><div class="cp-stat-label">bypass route</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint">
-      <img class="chokepoint-img" src="images/danish-straits.jpg" alt="Danish Straits satellite image">
+    <article class="chokepoint">
+      <img class="chokepoint-img" src="images/danish-straits.jpg" alt="Danish Straits satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Danish Straits</div>
         <span class="chokepoint-tag tag-controlled">OPEN</span>
@@ -903,16 +912,19 @@
         <div class="cp-stat"><div class="cp-stat-val blue">NATO</div><div class="cp-stat-label">controlled</div></div>
         <div class="cp-stat"><div class="cp-stat-val">None</div><div class="cp-stat-label">bypass route</div></div>
       </div>
-    </div>
+    </article>
 
   </div>
+  </section>
 
-  <!-- Secondary Chokepoints -->
-  <div class="section-label">Secondary chokepoints</div>
+  <!-- Secondary Chokepoints: 9 alternative passages and bypass routes -->
+  <!-- These have alternatives but disruption still causes notable delays and added costs -->
+  <section aria-label="Secondary chokepoint analysis">
+  <h2 class="section-label">Secondary chokepoints</h2>
   <div class="chokepoints-grid secondary-grid">
 
-    <div class="chokepoint secondary-card">
-      <img class="chokepoint-img" src="images/taiwan.jpg" alt="Taiwan Strait satellite image">
+    <article class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/taiwan.jpg" alt="Taiwan Strait satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Taiwan Strait</div>
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
@@ -923,10 +935,10 @@
         <div class="cp-stat"><div class="cp-stat-val gold">~20%</div><div class="cp-stat-label">of global trade</div></div>
         <div class="cp-stat"><div class="cp-stat-val gold">110 mi</div><div class="cp-stat-label">width</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint secondary-card">
-      <img class="chokepoint-img" src="images/korea.jpg" alt="Korea Strait satellite image">
+    <article class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/korea.jpg" alt="Korea Strait satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Korea Strait</div>
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
@@ -937,10 +949,10 @@
         <div class="cp-stat"><div class="cp-stat-val gold">120 mi</div><div class="cp-stat-label">width</div></div>
         <div class="cp-stat"><div class="cp-stat-val gold">Energy</div><div class="cp-stat-label">key cargo</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint secondary-card">
-      <img class="chokepoint-img" src="images/lombok.jpg" alt="Lombok Strait satellite image">
+    <article class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/lombok.jpg" alt="Lombok Strait satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Lombok Strait</div>
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
@@ -951,10 +963,10 @@
         <div class="cp-stat"><div class="cp-stat-val gold">~3,900</div><div class="cp-stat-label">ships/year</div></div>
         <div class="cp-stat"><div class="cp-stat-val gold">Deep</div><div class="cp-stat-label">draft capable</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint secondary-card">
-      <img class="chokepoint-img" src="images/sunda.jpg" alt="Sunda Strait satellite image">
+    <article class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/sunda.jpg" alt="Sunda Strait satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Sunda Strait</div>
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
@@ -965,10 +977,10 @@
         <div class="cp-stat"><div class="cp-stat-val gold">~2,280</div><div class="cp-stat-label">ships/year</div></div>
         <div class="cp-stat"><div class="cp-stat-val gold">15 mi</div><div class="cp-stat-label">width</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint secondary-card">
-      <img class="chokepoint-img" src="images/florida.jpg" alt="Florida Straits satellite image">
+    <article class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/florida.jpg" alt="Florida Straits satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Florida Straits</div>
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
@@ -979,10 +991,10 @@
         <div class="cp-stat"><div class="cp-stat-val gold">93 mi</div><div class="cp-stat-label">width</div></div>
         <div class="cp-stat"><div class="cp-stat-val gold">Oil</div><div class="cp-stat-label">key cargo</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint secondary-card">
-      <img class="chokepoint-img" src="images/windward.jpg" alt="Windward Passage satellite image">
+    <article class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/windward.jpg" alt="Windward Passage satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Windward Passage</div>
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
@@ -993,10 +1005,10 @@
         <div class="cp-stat"><div class="cp-stat-val gold">50 mi</div><div class="cp-stat-label">width</div></div>
         <div class="cp-stat"><div class="cp-stat-val gold">Panama</div><div class="cp-stat-label">route link</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint secondary-card">
-      <img class="chokepoint-img" src="images/magellan.jpg" alt="Strait of Magellan satellite image">
+    <article class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/magellan.jpg" alt="Strait of Magellan satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Strait of Magellan</div>
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
@@ -1007,10 +1019,10 @@
         <div class="cp-stat"><div class="cp-stat-val gold">~1,500</div><div class="cp-stat-label">ships/year</div></div>
         <div class="cp-stat"><div class="cp-stat-val gold">350 mi</div><div class="cp-stat-label">length</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint secondary-card">
-      <img class="chokepoint-img" src="images/cape-horn.jpg" alt="Cape Horn satellite image">
+    <article class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/cape-horn.jpg" alt="Cape Horn satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Cape Horn</div>
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
@@ -1021,10 +1033,10 @@
         <div class="cp-stat"><div class="cp-stat-val gold">Panama</div><div class="cp-stat-label">bypass route</div></div>
         <div class="cp-stat"><div class="cp-stat-val gold">Extreme</div><div class="cp-stat-label">weather risk</div></div>
       </div>
-    </div>
+    </article>
 
-    <div class="chokepoint secondary-card">
-      <img class="chokepoint-img" src="images/northern-sea-route.jpg" alt="Northern Sea Route satellite image">
+    <article class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/northern-sea-route.jpg" alt="Northern Sea Route satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Northern Sea Route</div>
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
@@ -1035,17 +1047,20 @@
         <div class="cp-stat"><div class="cp-stat-val gold">Emerging</div><div class="cp-stat-label">status</div></div>
         <div class="cp-stat"><div class="cp-stat-val gold">Seasonal</div><div class="cp-stat-label">access</div></div>
       </div>
-    </div>
+    </article>
 
   </div>
+  </section>
 
+  <!-- Page Footer: Attribution and data sources -->
   <footer>
-    <div class="footer-note">Created by <a href="https://ryanshook.org" style="color:var(--accent);text-decoration:none;">Ryan Shook</a></div>
-    <div class="footer-note">Sources: EIA, IEA, UNCTAD, Wikipedia</div>
+    <p class="footer-note">Created by <a href="https://ryanshook.org" style="color:var(--accent);text-decoration:none;">Ryan Shook</a></p>
+    <p class="footer-note">Sources: EIA, IEA, UNCTAD, Wikipedia</p>
   </footer>
 
-</div>
+</main>
 
+<!-- Map Tooltip: Fixed-position card that appears on hover over map dots -->
 <div class="map-tooltip" id="map-tooltip">
   <img class="map-tooltip-img" id="tooltip-img" src="" alt="">
   <div class="map-tooltip-body">
@@ -1056,14 +1071,17 @@
   </div>
 </div>
 
+<!-- Mini-Map: Floating widget that shows chokepoint location when hovering/scrolling cards -->
 <div class="mini-map" id="mini-map">
   <div class="mini-map-svg-wrap" id="mini-map-svg-wrap"></div>
   <div class="mini-map-crosshair"></div>
   <div class="mini-map-label" id="mini-map-label"></div>
 </div>
 
+<!-- Dependencies: D3.js for map rendering, TopoJSON for geographic data -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<!-- Main Application Script: Renders world map, plots chokepoints, handles interactions -->
 <script>
 (function() {
   var width = 1000;
@@ -1145,6 +1163,7 @@
     {
       name: "LOMBOK STRAIT", fullName: "Lombok Strait", lat: -8.5, lng: 115.7,
       labelDx: 10, labelDy: -6, anchor: "start",
+      image: "images/lombok.jpg",
       region: "Southeast Asia \u00b7 Bali / Lombok, Indonesia",
       desc: "Primary bypass for Malacca. Deep enough for supertankers and VLCCs that cannot transit Malacca's shallow Phillips Channel.",
       stats: [
@@ -1155,6 +1174,7 @@
     {
       name: "SUNDA STRAIT", fullName: "Sunda Strait", lat: -6.1, lng: 105.8,
       labelDx: -10, labelDy: -6, anchor: "end",
+      image: "images/sunda.jpg",
       region: "Southeast Asia \u00b7 Java / Sumatra, Indonesia",
       desc: "Another Malacca alternative connecting the Java Sea to the Indian Ocean. Narrower and shallower, limiting it to smaller vessels.",
       stats: [
@@ -1165,6 +1185,7 @@
     {
       name: "FLORIDA STRAITS", fullName: "Florida Straits", lat: 24.5, lng: -80.5,
       labelDx: -10, labelDy: -6, anchor: "end",
+      image: "images/florida.jpg",
       region: "Caribbean \u00b7 Florida / Cuba / Bahamas",
       desc: "Connects the Gulf of Mexico to the Atlantic. Carries significant oil tanker traffic from Gulf Coast refineries and U.S. energy exports.",
       stats: [
@@ -1175,6 +1196,7 @@
     {
       name: "WINDWARD PASSAGE", fullName: "Windward Passage", lat: 20.0, lng: -73.5,
       labelDx: 10, labelDy: 10, anchor: "start",
+      image: "images/windward.jpg",
       region: "Caribbean \u00b7 Cuba / Haiti",
       desc: "A 50-mile-wide channel between Cuba and Hispaniola. Important shortcut between the U.S. East Coast and the Panama Canal.",
       stats: [
@@ -1185,6 +1207,7 @@
     {
       name: "STRAIT OF MAGELLAN", fullName: "Strait of Magellan", lat: -53.5, lng: -70.5,
       labelDx: 10, labelDy: -6, anchor: "start",
+      image: "images/magellan.jpg",
       region: "South America \u00b7 Chile / Argentina",
       desc: "Navigable Atlantic-Pacific route at South America's tip. Calmer than Drake Passage but narrow with tricky currents.",
       stats: [
@@ -1195,6 +1218,7 @@
     {
       name: "CAPE HORN", fullName: "Cape Horn", lat: -55.98, lng: -67.27,
       labelDx: 10, labelDy: 10, anchor: "start",
+      image: "images/cape-horn.jpg",
       region: "South America \u00b7 Chile",
       desc: "Traditional bypass for the Panama Canal, used by vessels too large for the locks or when drought limits canal capacity.",
       stats: [
@@ -1205,6 +1229,7 @@
     {
       name: "NORTHERN SEA ROUTE", fullName: "Northern Sea Route", lat: 72.0, lng: 100.0,
       labelDx: 10, labelDy: -6, anchor: "start",
+      image: "images/northern-sea-route.jpg",
       region: "Arctic \u00b7 Russia's Northern Coast",
       desc: "Emerging Europe-Asia route across Russia's Arctic coast. Avoids Suez Canal but remains unpredictable due to sea ice.",
       stats: [
@@ -1392,9 +1417,9 @@
       tooltip.style.top = "10px";
     } else {
       var x = event.clientX + 16;
-      var y = event.clientY - 80;
+      var y = event.clientY + 20;
       if (x + tw > window.innerWidth - 10) x = event.clientX - tw - 16;
-      if (y + 300 > window.innerHeight - 10) y = window.innerHeight - 310;
+      if (y + 300 > window.innerHeight - 10) y = event.clientY - 320;
       if (y < 10) y = 10;
       if (x < 10) x = 10;
       tooltip.style.left = x + "px";
@@ -1629,16 +1654,34 @@
     var activeHighlight = null;
 
     if (isMobile) {
-      // Scroll-driven: show mini-map when card enters viewport
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          var card = entry.target;
-          var nameEl = card.querySelector(".chokepoint-name");
+      // Scroll-driven: pick the card closest to viewport center
+      var allCards = Array.from(document.querySelectorAll(".chokepoint"));
+      var ticking = false;
+
+      function updateOnScroll() {
+        var vpCenter = window.innerHeight / 2;
+        var closest = null;
+        var closestDist = Infinity;
+
+        allCards.forEach(function(card) {
+          var rect = card.getBoundingClientRect();
+          // Only consider cards at least partially visible
+          if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+          var cardCenter = rect.top + rect.height / 2;
+          var dist = Math.abs(cardCenter - vpCenter);
+          if (dist < closestDist) {
+            closestDist = dist;
+            closest = card;
+          }
+        });
+
+        if (closest) {
+          var nameEl = closest.querySelector(".chokepoint-name");
           if (!nameEl) return;
           var name = nameEl.textContent.trim();
 
-          if (entry.isIntersecting) {
-            // Clear previous highlight
+          if (name !== activeHighlight) {
+            // Clear previous
             if (activeHighlight) {
               var prevDot = svgEl.select('[data-name="' + activeHighlight + '"]');
               if (!prevDot.empty()) prevDot.classed("highlight", false);
@@ -1648,12 +1691,19 @@
             if (!dot.empty()) dot.classed("highlight", true);
             showMiniMap(name);
           }
-        });
-      }, { rootMargin: "-30% 0px -30% 0px", threshold: 0.1 });
+        }
+        ticking = false;
+      }
 
-      document.querySelectorAll(".chokepoint").forEach(function(card) {
-        observer.observe(card);
-      });
+      window.addEventListener("scroll", function() {
+        if (!ticking) {
+          requestAnimationFrame(updateOnScroll);
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // Initial check
+      updateOnScroll();
     } else {
       // Desktop: hover-driven
       document.querySelectorAll(".chokepoint").forEach(function(card) {
