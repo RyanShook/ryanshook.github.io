@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Maritime Chokepoints — Interactive Map & Strategic Analysis</title>
+<meta name="description" content="Interactive reference guide to the world's most critical maritime chokepoints. Explore an interactive D3.js map of 18 strategic straits and waterways that control global trade, energy supply chains, and naval power projection.">
+<meta name="keywords" content="maritime chokepoints, Strait of Hormuz, Strait of Malacca, Suez Canal, Panama Canal, global trade routes, shipping lanes, geopolitics, naval strategy, maritime security, Bab el-Mandeb, Bosphorus, Gibraltar, Cape of Good Hope">
+<meta name="author" content="Ryan Shook">
+<link rel="canonical" href="https://ryanshook.org/chokepoints/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Global Maritime Chokepoints — Interactive Map & Strategic Analysis">
+<meta property="og:description" content="Interactive reference guide to 18 strategic straits and waterways that control global trade, energy supply chains, and naval power projection.">
+<meta property="og:url" content="https://ryanshook.org/chokepoints/">
+<meta property="og:site_name" content="Ryan Shook">
+<meta property="og:image" content="https://ryanshook.org/images/ryan.jpg">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Global Maritime Chokepoints — Interactive Map & Analysis">
+<meta name="twitter:description" content="Interactive reference guide to 18 strategic straits and waterways that control global trade and energy supply chains.">
+<meta name="twitter:site" content="@ryanshook">
+<meta name="twitter:image" content="https://ryanshook.org/images/ryan.jpg">
+
+<!-- Favicon (inline SVG compass rose) -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%230a0c10' stroke='%23c8a96e' stroke-width='1.5'/><path d='M16 6 L16 26 M16 6 L12 12 M16 6 L20 12' stroke='%23c8a96e' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='16' cy='26' r='2' fill='%23c8a96e'/></svg>" type="image/svg+xml">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Global Maritime Chokepoints — Interactive Map & Strategic Analysis",
+  "description": "Interactive reference guide to the world's most critical maritime chokepoints, featuring an interactive map of 18 strategic straits and waterways.",
+  "author": {
+    "@type": "Person",
+    "name": "Ryan Shook",
+    "url": "https://ryanshook.org"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Ryan Shook"
+  },
+  "url": "https://ryanshook.org/chokepoints/",
+  "mainEntityOfPage": "https://ryanshook.org/chokepoints/",
+  "about": [
+    { "@type": "Thing", "name": "Maritime chokepoints" },
+    { "@type": "Thing", "name": "Global trade routes" },
+    { "@type": "Thing", "name": "Geopolitics" }
+  ]
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #181c24;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8e6e0;
+    --muted: #6b7280;
+    --accent: #c8a96e;
+    --accent2: #4a9eff;
+    --danger: #ff4d4d;
+    --danger-dim: rgba(255,77,77,0.15);
+    --success: #4ade80;
+  }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    padding: 2rem 0 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--danger-dim);
+    border: 1px solid rgba(255,77,77,0.3);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--danger);
+    letter-spacing: 0.05em;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--danger);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  .date-stamp {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Map */
+  .map-section {
+    margin-bottom: 3rem;
+  }
+
+  .map-frame {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface);
+    position: relative;
+  }
+
+  .map-label {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 2;
+    background: var(--surface);
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  /* World SVG map */
+  .world-map-svg {
+    width: 100%;
+    display: block;
+    touch-action: none;
+  }
+
+  #world-map {
+    padding: 0;
+  }
+
+  /* Chokepoints grid */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chokepoints-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+  }
+
+  .chokepoint {
+    background: var(--surface);
+    padding: 1.75rem;
+    transition: background 0.2s;
+    cursor: default;
+  }
+
+  .chokepoint:hover {
+    background: var(--surface2);
+  }
+
+  .chokepoint-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .chokepoint-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  .chokepoint-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .chokepoint-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tag-critical {
+    background: var(--danger-dim);
+    color: var(--danger);
+    border: 1px solid rgba(255,77,77,0.25);
+  }
+
+  .tag-disrupted {
+    background: rgba(255,170,0,0.12);
+    color: #ffaa00;
+    border: 1px solid rgba(255,170,0,0.25);
+  }
+
+  .tag-bypass {
+    background: rgba(74,222,128,0.1);
+    color: var(--success);
+    border: 1px solid rgba(74,222,128,0.2);
+  }
+
+  .tag-controlled {
+    background: rgba(74,158,255,0.1);
+    color: var(--accent2);
+    border: 1px solid rgba(74,158,255,0.2);
+  }
+
+  .tag-secondary {
+    background: rgba(200,169,110,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(200,169,110,0.2);
+  }
+
+  .secondary-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+
+  .secondary-card .chokepoint-desc {
+    font-size: 12.5px;
+  }
+
+  .chokepoint-region {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .chokepoint-desc {
+    font-size: 13.5px;
+    color: rgba(232,230,224,0.7);
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+  }
+
+  .chokepoint-stats {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .cp-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cp-stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+  }
+
+  .cp-stat-val.danger { color: var(--danger); }
+  .cp-stat-val.blue { color: var(--accent2); }
+  .cp-stat-val.green { color: var(--success); }
+  .cp-stat-val.gold { color: var(--accent); }
+
+  .cp-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* Why it matters section */
+  .insight-section {
+    margin-bottom: 3rem;
+  }
+
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .insight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .insight-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(135deg, rgba(200,169,110,0.3), rgba(200,169,110,0.05));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .insight-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .insight-text {
+    font-size: 13px;
+    color: rgba(232,230,224,0.6);
+    line-height: 1.6;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 1rem;
+  }
+
+  .footer-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Animated chokepoint map */
+  .chokepoint-dot {
+    cursor: pointer;
+  }
+
+  .chokepoint-dot circle.outer {
+    animation: ripple 3s ease-out infinite;
+    transform-origin: center;
+  }
+
+  .chokepoint-dot.critical circle.outer {
+    fill: rgba(255,77,77,0.15);
+    stroke: rgba(255,77,77,0.5);
+  }
+
+  .chokepoint-dot.critical circle.inner {
+    fill: var(--danger);
+  }
+
+  .chokepoint-dot.disrupted circle.outer {
+    fill: rgba(255,170,0,0.15);
+    stroke: rgba(255,170,0,0.5);
+  }
+
+  .chokepoint-dot.disrupted circle.inner {
+    fill: #ffaa00;
+  }
+
+  .chokepoint-dot.bypass circle.outer {
+    fill: rgba(74,222,128,0.1);
+    stroke: rgba(74,222,128,0.3);
+  }
+
+  .chokepoint-dot.bypass circle.inner {
+    fill: var(--success);
+  }
+
+  .chokepoint-dot.controlled circle.outer {
+    fill: rgba(74,158,255,0.1);
+    stroke: rgba(74,158,255,0.3);
+  }
+
+  .chokepoint-dot.controlled circle.inner {
+    fill: var(--accent2);
+  }
+
+  @keyframes ripple {
+    0% { r: 8; opacity: 0.8; }
+    100% { r: 18; opacity: 0; }
+  }
+
+  .chokepoint-dot .highlight-ring {
+    display: none;
+  }
+
+  .chokepoint-dot.highlight .highlight-ring {
+    display: block;
+    animation: highlight-ping 1s ease-in-out infinite;
+  }
+
+  @keyframes highlight-ping {
+    0%, 100% { r: 12; opacity: 0.7; }
+    50% { r: 22; opacity: 0; }
+  }
+
+  /* Floating mini-map on card hover */
+  .mini-map {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 240px;
+    height: 140px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    transition: opacity 0.25s, transform 0.25s;
+    pointer-events: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  .mini-map.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .mini-map-svg-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .mini-map-svg-wrap svg {
+    position: absolute;
+    transform-origin: 0 0;
+  }
+
+  .mini-map-crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin: -12px 0 0 -12px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
+  }
+
+  .mini-map-crosshair::before,
+  .mini-map-crosshair::after {
+    content: '';
+    position: absolute;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+
+  .mini-map-crosshair::before {
+    width: 1px;
+    height: 140px;
+    left: 50%;
+    top: -60px;
+  }
+
+  .mini-map-crosshair::after {
+    width: 240px;
+    height: 1px;
+    top: 50%;
+    left: -110px;
+  }
+
+  .mini-map-label {
+    position: absolute;
+    bottom: 6px;
+    left: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    background: rgba(17,19,24,0.85);
+    padding: 2px 6px;
+    border-radius: 3px;
+    z-index: 3;
+  }
+
+  @keyframes ripple-sm {
+    0% { r: 6; opacity: 0.6; }
+    100% { r: 14; opacity: 0; }
+  }
+
+  .map-zoom {
+    position: absolute;
+    bottom: 3.5rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    z-index: 3;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .map-zoom button {
+    width: 32px;
+    height: 32px;
+    background: var(--surface);
+    color: var(--muted);
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .map-zoom button:hover {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  .map-zoom button:first-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .map-legend {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    position: relative;
+    cursor: help;
+  }
+
+  .legend-item .legend-tip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 0;
+    width: 280px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-transform: none;
+    letter-spacing: 0;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .legend-tip-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 0.35rem;
+  }
+
+  .legend-tip-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .legend-tip-desc {
+    font-size: 13px;
+    color: rgba(232,230,224,0.7);
+    line-height: 1.65;
+  }
+
+  .legend-item:hover .legend-tip {
+    display: block;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .highlight-box {
+    background: var(--danger-dim);
+    border: 1px solid rgba(255,77,77,0.2);
+    border-left: 3px solid var(--danger);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 14px;
+    color: rgba(232,230,224,0.8);
+    line-height: 1.6;
+  }
+
+  .highlight-box strong {
+    color: var(--danger);
+    font-weight: 600;
+  }
+
+  /* Map tooltip */
+  .map-tooltip {
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 300px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  }
+
+  .map-tooltip.visible {
+    opacity: 1;
+  }
+
+  .map-tooltip-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .map-tooltip-body {
+    padding: 1rem;
+  }
+
+  .map-tooltip-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .map-tooltip-region {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .map-tooltip-desc {
+    font-size: 12px;
+    color: rgba(232,230,224,0.6);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+
+  .map-tooltip-stats {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .map-tooltip-stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+
+  .map-tooltip-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Global Maritime<br><em>Chokepoints</em></h1>
+    <div class="header-meta">
+      <div class="date-stamp">A reference guide to the world's most strategic waterways</div>
+    </div>
+  </header>
+
+  <!-- World Map -->
+  <div class="map-section">
+    <div class="map-frame">
+      <div class="map-label">GLOBAL CHOKEPOINT MAP</div>
+      <div id="world-map"></div>
+      <div class="map-tooltip" id="map-tooltip">
+        <img class="map-tooltip-img" id="tooltip-img" src="" alt="">
+        <div class="map-tooltip-body">
+          <div class="map-tooltip-name" id="tooltip-name"></div>
+          <div class="map-tooltip-region" id="tooltip-region"></div>
+          <div class="map-tooltip-desc" id="tooltip-desc"></div>
+          <div class="map-tooltip-stats" id="tooltip-stats"></div>
+        </div>
+      </div>
+      <div class="map-zoom">
+        <button id="zoom-in" title="Zoom in">+</button>
+        <button id="zoom-out" title="Zoom out">−</button>
+      </div>
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#4a9eff;"></div>Primary<div class="legend-tip"><div class="legend-tip-name">Primary Chokepoint</div><div class="legend-tip-label">No cost-effective alternative</div><div class="legend-tip-desc">Straits and canals where closure forces massive detours or cuts off access to entire seas and resource regions. These are the highest-consequence bottlenecks in global trade.</div></div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#c8a96e;opacity:0.6;"></div>Secondary<div class="legend-tip"><div class="legend-tip-name">Secondary Chokepoint</div><div class="legend-tip-label">Alternatives exist</div><div class="legend-tip-desc">Passages that have bypass routes, but disruption would still cause notable detours, added shipping costs, and supply chain delays across affected regions.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chokepoints detail -->
+  <div class="section-label">Chokepoint analysis</div>
+  <div class="chokepoints-grid">
+
+    <div class="chokepoint">
+      <img class="chokepoint-img" src="images/hormuz.jpg" alt="Strait of Hormuz satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Strait of Hormuz</div>
+        <span class="chokepoint-tag tag-critical">IMPACTED</span>
+      </div>
+      <div class="chokepoint-region">Persian Gulf · Iran / Oman</div>
+      <div class="chokepoint-desc">The world's most critical energy chokepoint — with no maritime bypass route. Iran sits along its entire northern coast, giving it the ability to threaten closure with mines, missiles, and fast attack boats. Limited pipeline alternatives exist but cannot replace the ~20 million barrels/day that transit by sea.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val danger">20%</div><div class="cp-stat-label">of world oil</div></div>
+        <div class="cp-stat"><div class="cp-stat-val danger">21 mi</div><div class="cp-stat-label">width at narrowest</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">No maritime bypass</div><div class="cp-stat-label">bypass route</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint">
+      <img class="chokepoint-img" src="images/malacca.jpg" alt="Strait of Malacca satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Strait of Malacca</div>
+        <span class="chokepoint-tag tag-controlled">OPEN</span>
+      </div>
+      <div class="chokepoint-region">Southeast Asia · Malaysia / Indonesia / Singapore</div>
+      <div class="chokepoint-desc">The busiest chokepoint by ship count and China, Japan, and South Korea's primary oil lifeline from the Middle East. A blockage here would rival Hormuz in economic impact. Piracy has historically been a concern; Singapore manages heavy traffic coordination through one of the narrowest shipping lanes in the world.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val blue">25%</div><div class="cp-stat-label">of global trade</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">~94,000</div><div class="cp-stat-label">ships/year</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">Lombok</div><div class="cp-stat-label">bypass route</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint">
+      <img class="chokepoint-img" src="images/suez.jpg" alt="Suez Canal satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Suez Canal</div>
+        <span class="chokepoint-tag tag-controlled">OPEN</span>
+      </div>
+      <div class="chokepoint-region">Egypt · Mediterranean / Red Sea</div>
+      <div class="chokepoint-desc">Man-made canal connecting Mediterranean to Red Sea. Carries ~12% of global trade and ~10% of oil. The Ever Given blockage (2021) cost an estimated $9.6B/day. When Bab el-Mandeb is blocked, the Suez route becomes useless — ships must reroute around Africa regardless.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val blue">12%</div><div class="cp-stat-label">of global trade</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">~20,000</div><div class="cp-stat-label">ships/year</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">Cape of Good Hope</div><div class="cp-stat-label">bypass route</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint">
+      <img class="chokepoint-img" src="images/bab-el-mandeb.jpg" alt="Bab el-Mandeb satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Bab el-Mandeb</div>
+        <span class="chokepoint-tag tag-controlled">OPEN</span>
+      </div>
+      <div class="chokepoint-region">Red Sea Gateway · Yemen / Djibouti / Eritrea</div>
+      <div class="chokepoint-desc">The southern gateway to the Suez Canal. All shipping between Asia and Europe via Suez must pass through this 18-mile-wide strait. Its proximity to Yemen makes it vulnerable to non-state actors and regional instability. When blocked, ships must reroute around the entire African continent.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val blue">10-12%</div><div class="cp-stat-label">of global trade</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">18 mi</div><div class="cp-stat-label">width</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">Cape of Good Hope</div><div class="cp-stat-label">bypass route</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint">
+      <img class="chokepoint-img" src="images/panama.jpg" alt="Panama Canal satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Panama Canal</div>
+        <span class="chokepoint-tag tag-controlled">OPEN</span>
+      </div>
+      <div class="chokepoint-region">Central America · Atlantic / Pacific</div>
+      <div class="chokepoint-desc">The primary Atlantic-Pacific shortcut, carrying ~5% of global trade. Relies on freshwater from Gatun Lake to operate its lock system, making it uniquely vulnerable to drought. A severe drought in 2023-24 forced Panama to reduce daily transits by ~40% — a climate-driven chokepoint disruption.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val blue">5%</div><div class="cp-stat-label">of global trade</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">~14,000</div><div class="cp-stat-label">ships/year</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">Drake Passage</div><div class="cp-stat-label">bypass route</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint">
+      <img class="chokepoint-img" src="images/bosphorus.jpg" alt="Bosphorus satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Bosphorus</div>
+        <span class="chokepoint-tag tag-controlled">CONTROLLED</span>
+      </div>
+      <div class="chokepoint-region">Turkey · Black Sea / Mediterranean</div>
+      <div class="chokepoint-desc">Turkey controls both the Bosphorus and Dardanelles under the 1936 Montreux Convention, giving it legal authority to restrict warship passage in wartime. This single-nation control over a major waterway makes Turkey a pivotal gatekeeper between the Black Sea and the Mediterranean.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val blue">3%</div><div class="cp-stat-label">of global oil</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">Turkey</div><div class="cp-stat-label">controller</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">None</div><div class="cp-stat-label">bypass route</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint">
+      <img class="chokepoint-img" src="images/gibraltar.jpg" alt="Strait of Gibraltar satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Strait of Gibraltar</div>
+        <span class="chokepoint-tag tag-controlled">OPEN</span>
+      </div>
+      <div class="chokepoint-region">Atlantic / Mediterranean · Spain / Morocco</div>
+      <div class="chokepoint-desc">The only maritime gateway between the Atlantic and the Mediterranean. All shipping to or from Mediterranean ports must pass through here. Gibraltar, on the northern shore, is a British Overseas Territory. One of the busiest waterways on Earth with low disruption risk but enormous strategic significance.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val blue">~100,000</div><div class="cp-stat-label">ships/year</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">14km</div><div class="cp-stat-label">narrowest point</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">None</div><div class="cp-stat-label">bypass route</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint">
+      <img class="chokepoint-img" src="images/cape-good-hope.jpg" alt="Cape of Good Hope satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Cape of Good Hope</div>
+        <span class="chokepoint-tag tag-controlled">OPEN</span>
+      </div>
+      <div class="chokepoint-region">South Africa · Atlantic / Indian Ocean</div>
+      <div class="chokepoint-desc">The primary alternative for vessels bypassing the Suez Canal or Bab el-Mandeb Strait. While it avoids high-risk areas like the Red Sea, it adds approximately 3,200 nautical miles and 10-14 days to a standard Asia-Europe journey.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val blue">+3,200 nmi</div><div class="cp-stat-label">added distance</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">+12 days</div><div class="cp-stat-label">added transit</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">Suez / Bab el-Mandeb</div><div class="cp-stat-label">bypass route</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint">
+      <img class="chokepoint-img" src="images/danish-straits.jpg" alt="Danish Straits satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Danish Straits</div>
+        <span class="chokepoint-tag tag-controlled">OPEN</span>
+      </div>
+      <div class="chokepoint-region">Baltic Sea outlet · Denmark / Sweden</div>
+      <div class="chokepoint-desc">The only maritime exit for Baltic Sea nations — Russia, Finland, Sweden, Poland, Germany, Estonia, Latvia, Lithuania. Russian oil and gas exports and Nordic trade all depend on these straits. NATO membership of Denmark and Sweden makes these straits geopolitically significant in any European security scenario.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val blue">Baltic exit</div><div class="cp-stat-label">function</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">NATO</div><div class="cp-stat-label">controlled</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">None</div><div class="cp-stat-label">bypass route</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Secondary Chokepoints -->
+  <div class="section-label">Secondary chokepoints</div>
+  <div class="chokepoints-grid secondary-grid">
+
+    <div class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/taiwan.jpg" alt="Taiwan Strait satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Taiwan Strait</div>
+        <span class="chokepoint-tag tag-secondary">SECONDARY</span>
+      </div>
+      <div class="chokepoint-region">East Asia · Taiwan / China</div>
+      <div class="chokepoint-desc">A 110-mile-wide passage carrying roughly 20% of global maritime trade by value, including critical semiconductor supply chains. One of the most geopolitically sensitive waterways in the world.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val gold">~20%</div><div class="cp-stat-label">of global trade</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">110 mi</div><div class="cp-stat-label">width</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/korea.jpg" alt="Korea Strait satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Korea Strait</div>
+        <span class="chokepoint-tag tag-secondary">SECONDARY</span>
+      </div>
+      <div class="chokepoint-region">East Asia · South Korea / Japan</div>
+      <div class="chokepoint-desc">Links the East China Sea to the Sea of Japan. Vital for Japanese and South Korean trade, particularly energy imports. Tsushima Island divides the strait into two channels.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val gold">120 mi</div><div class="cp-stat-label">width</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">Energy</div><div class="cp-stat-label">key cargo</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/lombok.jpg" alt="Lombok Strait satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Lombok Strait</div>
+        <span class="chokepoint-tag tag-secondary">SECONDARY</span>
+      </div>
+      <div class="chokepoint-region">Southeast Asia · Bali / Lombok, Indonesia</div>
+      <div class="chokepoint-desc">The primary bypass for the Strait of Malacca. Deep enough for supertankers and VLCCs that cannot transit Malacca's shallow Phillips Channel. About 3,900 ships transit annually.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val gold">~3,900</div><div class="cp-stat-label">ships/year</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">Deep</div><div class="cp-stat-label">draft capable</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/sunda.jpg" alt="Sunda Strait satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Sunda Strait</div>
+        <span class="chokepoint-tag tag-secondary">SECONDARY</span>
+      </div>
+      <div class="chokepoint-region">Southeast Asia · Java / Sumatra, Indonesia</div>
+      <div class="chokepoint-desc">Another Malacca alternative connecting the Java Sea to the Indian Ocean. Narrower and shallower than Lombok, limiting it to smaller vessels. About 2,280 ships transit annually.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val gold">~2,280</div><div class="cp-stat-label">ships/year</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">15 mi</div><div class="cp-stat-label">width</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/florida.jpg" alt="Florida Straits satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Florida Straits</div>
+        <span class="chokepoint-tag tag-secondary">SECONDARY</span>
+      </div>
+      <div class="chokepoint-region">Caribbean · Florida / Cuba / Bahamas</div>
+      <div class="chokepoint-desc">Connects the Gulf of Mexico to the Atlantic Ocean. Carries significant oil tanker traffic from Gulf Coast refineries and serves as a primary shipping corridor for U.S. energy exports.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val gold">93 mi</div><div class="cp-stat-label">width</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">Oil</div><div class="cp-stat-label">key cargo</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/windward.jpg" alt="Windward Passage satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Windward Passage</div>
+        <span class="chokepoint-tag tag-secondary">SECONDARY</span>
+      </div>
+      <div class="chokepoint-region">Caribbean · Cuba / Haiti</div>
+      <div class="chokepoint-desc">A 50-mile-wide channel between Cuba and Hispaniola. Important shortcut between the U.S. East Coast and the Panama Canal, reducing transit time compared to routing through the Florida Straits.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val gold">50 mi</div><div class="cp-stat-label">width</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">Panama</div><div class="cp-stat-label">route link</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/magellan.jpg" alt="Strait of Magellan satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Strait of Magellan</div>
+        <span class="chokepoint-tag tag-secondary">SECONDARY</span>
+      </div>
+      <div class="chokepoint-region">South America · Chile / Argentina</div>
+      <div class="chokepoint-desc">A navigable Atlantic-Pacific route at South America's tip. Calmer than the Drake Passage but narrow with tricky currents. About 1,500 ships transit annually, mainly as a Panama Canal alternative.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val gold">~1,500</div><div class="cp-stat-label">ships/year</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">350 mi</div><div class="cp-stat-label">length</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/cape-horn.jpg" alt="Cape Horn satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Cape Horn</div>
+        <span class="chokepoint-tag tag-secondary">SECONDARY</span>
+      </div>
+      <div class="chokepoint-region">South America · Chile</div>
+      <div class="chokepoint-desc">The traditional bypass for the Panama Canal, used by vessels that cannot fit through the canal's locks or when drought-induced water shortages limit canal capacity. Known for extreme weather and powerful currents.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val gold">Panama</div><div class="cp-stat-label">bypass route</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">Extreme</div><div class="cp-stat-label">weather risk</div></div>
+      </div>
+    </div>
+
+    <div class="chokepoint secondary-card">
+      <img class="chokepoint-img" src="images/northern-sea-route.jpg" alt="Northern Sea Route satellite image">
+      <div class="chokepoint-header">
+        <div class="chokepoint-name">Northern Sea Route</div>
+        <span class="chokepoint-tag tag-secondary">SECONDARY</span>
+      </div>
+      <div class="chokepoint-region">Arctic · Russia's Northern Coast</div>
+      <div class="chokepoint-desc">An emerging bypass route across Russia's northern coast connecting Europe and Asia. Melting Arctic ice is making it more viable, potentially offering a shorter path that avoids Suez Canal taxes. Remains unpredictable due to sea ice.</div>
+      <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val gold">Emerging</div><div class="cp-stat-label">status</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">Seasonal</div><div class="cp-stat-label">access</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-note">Created by <a href="https://ryanshook.org" style="color:var(--accent);text-decoration:none;">Ryan Shook</a></div>
+    <div class="footer-note">Sources: EIA, IEA, UNCTAD, Wikipedia</div>
+  </footer>
+
+</div>
+
+<div class="mini-map" id="mini-map">
+  <div class="mini-map-svg-wrap" id="mini-map-svg-wrap"></div>
+  <div class="mini-map-crosshair"></div>
+  <div class="mini-map-label" id="mini-map-label"></div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script>
+(function() {
+  var width = 1000;
+  var height = 500;
+
+  var projection = d3.geoNaturalEarth1()
+    .scale(170)
+    .translate([width / 2, height / 2]);
+
+  var path = d3.geoPath().projection(projection);
+
+  var svgEl = d3.select("#world-map")
+    .append("svg")
+    .attr("viewBox", "0 0 " + width + " " + height)
+    .attr("class", "world-map-svg");
+
+  svgEl.append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("fill", "#0d1117");
+
+  var svg = svgEl.append("g");
+
+  // Zoom behavior
+  var zoom = d3.zoom()
+    .scaleExtent([1, 6])
+    .translateExtent([[-width, -height], [width * 2, height * 2]])
+    .on("zoom", function(event) {
+      svg.attr("transform", event.transform);
+    });
+
+  svgEl.call(zoom);
+
+  // Start zoomed into the Middle East / Indian Ocean region
+  var initScale = 2.2;
+  var focusPoint = projection([50, 22]); // Middle East
+  var initX = width / 2 - focusPoint[0] * initScale;
+  var initY = height / 2 - focusPoint[1] * initScale;
+  var initTransform = d3.zoomIdentity.translate(initX, initY).scale(initScale);
+  svgEl.call(zoom.transform, initTransform);
+
+  // Wire up zoom buttons
+  document.getElementById("zoom-in").addEventListener("click", function() {
+    svgEl.transition().duration(300).call(zoom.scaleBy, 1.5);
+  });
+  document.getElementById("zoom-out").addEventListener("click", function() {
+    svgEl.transition().duration(300).call(zoom.scaleBy, 1 / 1.5);
+  });
+
+  var typeColors = {
+    critical: { inner: "#ff4d4d", outerFill: "rgba(255,77,77,0.15)", outerStroke: "rgba(255,77,77,0.5)" },
+    controlled: { inner: "#4a9eff", outerFill: "rgba(74,158,255,0.1)", outerStroke: "rgba(74,158,255,0.4)" },
+    bypass: { inner: "#4ade80", outerFill: "rgba(74,222,128,0.1)", outerStroke: "rgba(74,222,128,0.3)" },
+    secondary: { inner: "#c8a96e", outerFill: "rgba(200,169,110,0.08)", outerStroke: "rgba(200,169,110,0.25)" }
+  };
+
+  var secondaryPoints = [
+    {
+      name: "TAIWAN STRAIT", fullName: "Taiwan Strait", lat: 24.0, lng: 119.0,
+      labelDx: 10, labelDy: -6, anchor: "start",
+      image: "images/taiwan.jpg",
+      region: "East Asia \u00b7 Taiwan / China",
+      desc: "A 110-mile-wide passage carrying roughly 20% of global maritime trade by value, including critical semiconductor supply chains.",
+      stats: [
+        { val: "~20%", label: "of global trade", color: "#c8a96e" },
+        { val: "110 mi", label: "width", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "KOREA STRAIT", fullName: "Korea Strait", lat: 34.0, lng: 129.0,
+      labelDx: 10, labelDy: -6, anchor: "start",
+      image: "images/korea.jpg",
+      region: "East Asia \u00b7 South Korea / Japan",
+      desc: "Links the East China Sea to the Sea of Japan. Vital for Japanese and South Korean energy imports. Tsushima Island divides it into two channels.",
+      stats: [
+        { val: "120 mi", label: "width", color: "#c8a96e" },
+        { val: "Energy", label: "key cargo", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "LOMBOK STRAIT", fullName: "Lombok Strait", lat: -8.5, lng: 115.7,
+      labelDx: 10, labelDy: -6, anchor: "start",
+      region: "Southeast Asia \u00b7 Bali / Lombok, Indonesia",
+      desc: "Primary bypass for Malacca. Deep enough for supertankers and VLCCs that cannot transit Malacca's shallow Phillips Channel.",
+      stats: [
+        { val: "~3,900", label: "ships/year", color: "#c8a96e" },
+        { val: "Deep", label: "draft capable", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "SUNDA STRAIT", fullName: "Sunda Strait", lat: -6.1, lng: 105.8,
+      labelDx: -10, labelDy: -6, anchor: "end",
+      region: "Southeast Asia \u00b7 Java / Sumatra, Indonesia",
+      desc: "Another Malacca alternative connecting the Java Sea to the Indian Ocean. Narrower and shallower, limiting it to smaller vessels.",
+      stats: [
+        { val: "~2,280", label: "ships/year", color: "#c8a96e" },
+        { val: "15 mi", label: "width", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "FLORIDA STRAITS", fullName: "Florida Straits", lat: 24.5, lng: -80.5,
+      labelDx: -10, labelDy: -6, anchor: "end",
+      region: "Caribbean \u00b7 Florida / Cuba / Bahamas",
+      desc: "Connects the Gulf of Mexico to the Atlantic. Carries significant oil tanker traffic from Gulf Coast refineries and U.S. energy exports.",
+      stats: [
+        { val: "93 mi", label: "width", color: "#c8a96e" },
+        { val: "Oil", label: "key cargo", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "WINDWARD PASSAGE", fullName: "Windward Passage", lat: 20.0, lng: -73.5,
+      labelDx: 10, labelDy: 10, anchor: "start",
+      region: "Caribbean \u00b7 Cuba / Haiti",
+      desc: "A 50-mile-wide channel between Cuba and Hispaniola. Important shortcut between the U.S. East Coast and the Panama Canal.",
+      stats: [
+        { val: "50 mi", label: "width", color: "#c8a96e" },
+        { val: "Panama", label: "route link", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "STRAIT OF MAGELLAN", fullName: "Strait of Magellan", lat: -53.5, lng: -70.5,
+      labelDx: 10, labelDy: -6, anchor: "start",
+      region: "South America \u00b7 Chile / Argentina",
+      desc: "Navigable Atlantic-Pacific route at South America's tip. Calmer than Drake Passage but narrow with tricky currents.",
+      stats: [
+        { val: "~1,500", label: "ships/year", color: "#c8a96e" },
+        { val: "350 mi", label: "length", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "CAPE HORN", fullName: "Cape Horn", lat: -55.98, lng: -67.27,
+      labelDx: 10, labelDy: 10, anchor: "start",
+      region: "South America \u00b7 Chile",
+      desc: "Traditional bypass for the Panama Canal, used by vessels too large for the locks or when drought limits canal capacity.",
+      stats: [
+        { val: "Panama", label: "bypasses", color: "#c8a96e" },
+        { val: "Extreme", label: "weather risk", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "NORTHERN SEA ROUTE", fullName: "Northern Sea Route", lat: 72.0, lng: 100.0,
+      labelDx: 10, labelDy: -6, anchor: "start",
+      region: "Arctic \u00b7 Russia's Northern Coast",
+      desc: "Emerging Europe-Asia route across Russia's Arctic coast. Avoids Suez Canal but remains unpredictable due to sea ice.",
+      stats: [
+        { val: "Emerging", label: "status", color: "#c8a96e" },
+        { val: "Seasonal", label: "access", color: "#c8a96e" }
+      ]
+    }
+  ];
+
+  var chokepoints = [
+    {
+      name: "HORMUZ", fullName: "Strait of Hormuz",
+      lat: 26.5, lng: 56.3, type: "critical",
+      labelDx: 12, labelDy: -10, anchor: "start",
+      region: "Persian Gulf \u00b7 Iran / Oman",
+      desc: "The world's most critical energy chokepoint \u2014 no bypass route exists. Iran controls the entire northern coast.",
+      image: "images/hormuz.jpg",
+      stats: [
+        { val: "20%", label: "of world oil", color: "#ff4d4d" },
+        { val: "21 mi", label: "width", color: "#ff4d4d" },
+        { val: "No maritime bypass", label: "bypass route", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "MALACCA", fullName: "Strait of Malacca",
+      lat: 2.5, lng: 101.5, type: "controlled",
+      labelDx: -12, labelDy: -10, anchor: "end",
+      region: "Southeast Asia \u00b7 Malaysia / Indonesia / Singapore",
+      desc: "The busiest chokepoint by ship count. Primary oil lifeline for China, Japan, and South Korea.",
+      image: "images/malacca.jpg",
+      stats: [
+        { val: "25%", label: "of global trade", color: "#4a9eff" },
+        { val: "~94K", label: "ships/year", color: "#4a9eff" },
+        { val: "Lombok", label: "bypass", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "SUEZ", fullName: "Suez Canal",
+      lat: 30.5, lng: 32.3, type: "controlled",
+      labelDx: 12, labelDy: -8, anchor: "start",
+      region: "Egypt \u00b7 Mediterranean / Red Sea",
+      desc: "Man-made canal carrying ~12% of global trade. The Ever Given blockage (2021) cost ~$9.6B/day.",
+      image: "images/suez.jpg",
+      stats: [
+        { val: "12%", label: "of global trade", color: "#4a9eff" },
+        { val: "~20K", label: "ships/year", color: "#4a9eff" },
+        { val: "Cape of Good Hope", label: "bypass route", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "BAB EL-MANDEB", fullName: "Bab el-Mandeb",
+      lat: 12.6, lng: 43.3, type: "controlled",
+      labelDx: 12, labelDy: 4, anchor: "start",
+      region: "Red Sea Gateway \u00b7 Yemen / Djibouti / Eritrea",
+      desc: "Southern gateway to the Suez Canal. When blocked, the entire Suez route becomes useless.",
+      image: "images/bab-el-mandeb.jpg",
+      stats: [
+        { val: "10-12%", label: "of global trade", color: "#4a9eff" },
+        { val: "18 mi", label: "width", color: "#4a9eff" },
+        { val: "Cape of Good Hope", label: "bypass route", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "PANAMA", fullName: "Panama Canal",
+      lat: 9.1, lng: -79.7, type: "controlled",
+      labelDx: 12, labelDy: -8, anchor: "start",
+      region: "Central America \u00b7 Atlantic / Pacific",
+      desc: "Primary Atlantic-Pacific shortcut. Uniquely vulnerable to drought due to its freshwater lock system.",
+      image: "images/panama.jpg",
+      stats: [
+        { val: "5%", label: "of global trade", color: "#4a9eff" },
+        { val: "~14K", label: "ships/year", color: "#4a9eff" },
+        { val: "Drake", label: "bypass", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "GIBRALTAR", fullName: "Strait of Gibraltar",
+      lat: 36.0, lng: -5.5, type: "controlled",
+      labelDx: -12, labelDy: -8, anchor: "end",
+      region: "Atlantic / Mediterranean \u00b7 Spain / Morocco",
+      desc: "The only maritime gateway between the Atlantic and the Mediterranean. One of the busiest waterways on Earth.",
+      image: "images/gibraltar.jpg",
+      stats: [
+        { val: "~100K", label: "ships/year", color: "#4a9eff" },
+        { val: "14km", label: "width", color: "#4a9eff" },
+        { val: "None", label: "bypass", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "BOSPHORUS", fullName: "Bosphorus",
+      lat: 41.1, lng: 29.0, type: "controlled",
+      labelDx: 12, labelDy: -8, anchor: "start",
+      region: "Turkey \u00b7 Black Sea / Mediterranean",
+      desc: "Turkey controls passage under the 1936 Montreux Convention. Pivotal gatekeeper between Black Sea and Mediterranean.",
+      image: "images/bosphorus.jpg",
+      stats: [
+        { val: "3%", label: "of global oil", color: "#4a9eff" },
+        { val: "Turkey", label: "controller", color: "#4a9eff" },
+        { val: "None", label: "bypass", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "CAPE OF GOOD HOPE", fullName: "Cape of Good Hope",
+      lat: -34.4, lng: 18.5, type: "controlled",
+      labelDx: 12, labelDy: -8, anchor: "start",
+      region: "South Africa \u00b7 Atlantic / Indian Ocean",
+      desc: "The world's primary bypass route when Middle East corridors are blocked. Adds ~2 weeks and thousands of miles.",
+      image: "images/cape-good-hope.jpg",
+      stats: [
+        { val: "+2 wks", label: "vs. Suez", color: "#4a9eff" },
+        { val: "+$1-2M", label: "fuel cost", color: "#4a9eff" },
+        { val: "Suez / Bab el-Mandeb", label: "bypass route", color: "#c8a96e" }
+      ]
+    },
+    {
+      name: "DANISH STRAITS", fullName: "Danish Straits",
+      lat: 55.5, lng: 11.5, type: "controlled",
+      labelDx: 12, labelDy: -8, anchor: "start",
+      region: "Baltic Sea outlet \u00b7 Denmark / Sweden",
+      desc: "The only maritime exit for Baltic Sea nations. Critical for Russian, Nordic, and European trade flows.",
+      image: "images/danish-straits.jpg",
+      stats: [
+        { val: "Baltic", label: "exit", color: "#4a9eff" },
+        { val: "NATO", label: "controlled", color: "#4a9eff" },
+        { val: "None", label: "bypass", color: "#c8a96e" }
+      ]
+    }
+  ];
+
+  var routes = [
+    { coords: [[104,1],[95,5],[80,10],[72,15],[60,20],[56,26],[50,28],[43,13],[40,15],[33,30],[32,31],[30,35],[15,36],[-5,36]],
+      color: "rgba(74,158,255,0.18)", w: 1.5 },
+    { coords: [[104,1],[90,0],[75,-5],[55,-15],[40,-25],[25,-34],[18,-34],[15,-30],[10,-15],[5,0],[-5,36]],
+      color: "rgba(74,222,128,0.12)", w: 1 }
+  ];
+
+  // Tooltip elements
+  var tooltip = document.getElementById("map-tooltip");
+  var tooltipImg = document.getElementById("tooltip-img");
+  var tooltipName = document.getElementById("tooltip-name");
+  var tooltipRegion = document.getElementById("tooltip-region");
+  var tooltipDesc = document.getElementById("tooltip-desc");
+  var tooltipStats = document.getElementById("tooltip-stats");
+  var mapFrame = document.querySelector(".map-frame");
+
+  function buildStats(stats) {
+    while (tooltipStats.firstChild) tooltipStats.removeChild(tooltipStats.firstChild);
+    stats.forEach(function(s) {
+      var wrap = document.createElement("div");
+      wrap.style.display = "flex";
+      wrap.style.flexDirection = "column";
+      wrap.style.gap = "2px";
+      var valEl = document.createElement("div");
+      valEl.className = "map-tooltip-stat-val";
+      valEl.style.color = s.color;
+      valEl.textContent = s.val;
+      var labelEl = document.createElement("div");
+      labelEl.className = "map-tooltip-stat-label";
+      labelEl.textContent = s.label;
+      wrap.appendChild(valEl);
+      wrap.appendChild(labelEl);
+      tooltipStats.appendChild(wrap);
+    });
+  }
+
+  function showTooltip(cp, event) {
+    if (cp.image) {
+      tooltipImg.src = cp.image;
+      tooltipImg.alt = cp.fullName;
+      tooltipImg.style.display = "block";
+    } else {
+      tooltipImg.style.display = "none";
+    }
+    tooltipName.textContent = cp.fullName;
+    tooltipRegion.textContent = cp.region;
+    tooltipDesc.textContent = cp.desc;
+    buildStats(cp.stats);
+
+    var rect = mapFrame.getBoundingClientRect();
+    var x = event.clientX - rect.left + 16;
+    var y = event.clientY - rect.top - 80;
+
+    if (x + 320 > rect.width) x = event.clientX - rect.left - 316;
+    if (y + 300 > rect.height) y = rect.height - 310;
+    if (y < 10) y = 10;
+
+    tooltip.style.left = x + "px";
+    tooltip.style.top = y + "px";
+    tooltip.classList.add("visible");
+  }
+
+  function hideTooltip() {
+    tooltip.classList.remove("visible");
+  }
+
+  d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(function(world) {
+    var land = topojson.feature(world, world.objects.land);
+    var borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
+
+    svg.append("path")
+      .datum(d3.geoGraticule10())
+      .attr("d", path)
+      .attr("fill", "none")
+      .attr("stroke", "rgba(255,255,255,0.03)")
+      .attr("stroke-width", 0.5);
+
+    svg.append("path")
+      .datum(land)
+      .attr("d", path)
+      .attr("fill", "#1a2035")
+      .attr("stroke", "#2a3050")
+      .attr("stroke-width", 0.5);
+
+    svg.append("path")
+      .datum(borders)
+      .attr("d", path)
+      .attr("fill", "none")
+      .attr("stroke", "rgba(255,255,255,0.04)")
+      .attr("stroke-width", 0.3);
+
+    var line = d3.line()
+      .x(function(d) { return projection(d)[0]; })
+      .y(function(d) { return projection(d)[1]; })
+      .curve(d3.curveBasis);
+
+    routes.forEach(function(route) {
+      svg.append("path")
+        .attr("d", line(route.coords))
+        .attr("fill", "none")
+        .attr("stroke", route.color)
+        .attr("stroke-width", route.w)
+        .attr("stroke-dasharray", "4,4");
+    });
+
+    chokepoints.forEach(function(cp) {
+      var pos = projection([cp.lng, cp.lat]);
+      var colors = typeColors[cp.type];
+      var r = cp.type === "critical" ? 8 : 6;
+
+      var g = svg.append("g")
+        .attr("transform", "translate(" + pos[0] + "," + pos[1] + ")")
+        .attr("class", "chokepoint-dot " + cp.type)
+        .attr("data-name", cp.fullName);
+
+      g.append("circle")
+        .attr("class", "highlight-ring")
+        .attr("cx", 0).attr("cy", 0).attr("r", 12)
+        .attr("fill", "none")
+        .attr("stroke", colors.inner)
+        .attr("stroke-width", 2);
+
+      g.append("circle")
+        .attr("class", "outer")
+        .attr("cx", 0).attr("cy", 0).attr("r", r)
+        .attr("fill", colors.outerFill)
+        .attr("stroke", colors.outerStroke)
+        .attr("stroke-width", 1);
+
+      g.append("circle")
+        .attr("class", "inner")
+        .attr("cx", 0).attr("cy", 0)
+        .attr("r", cp.type === "critical" ? 5 : 4)
+        .attr("fill", colors.inner);
+
+      g.append("text")
+        .attr("x", cp.labelDx)
+        .attr("y", cp.labelDy)
+        .attr("fill", colors.inner)
+        .attr("font-family", "DM Mono, monospace")
+        .attr("font-size", cp.type === "critical" ? 9 : 8)
+        .attr("letter-spacing", "0.05em")
+        .attr("text-anchor", cp.anchor)
+        .text(cp.name);
+
+      // Larger invisible hit area for easier hovering
+      g.append("circle")
+        .attr("cx", 0).attr("cy", 0).attr("r", 18)
+        .attr("fill", "transparent")
+        .on("mouseenter", function(event) { showTooltip(cp, event); })
+        .on("mousemove", function(event) { showTooltip(cp, event); })
+        .on("mouseleave", hideTooltip);
+    });
+
+    // Secondary chokepoints and bypass routes
+    var secColors = typeColors.secondary;
+    var bypColors = typeColors.bypass;
+    secondaryPoints.forEach(function(sp) {
+      var pos = projection([sp.lng, sp.lat]);
+      var colors = sp.bypass ? bypColors : secColors;
+      var g = svg.append("g")
+        .attr("transform", "translate(" + pos[0] + "," + pos[1] + ")")
+        .attr("class", "chokepoint-dot")
+        .attr("data-name", sp.fullName);
+
+      g.append("circle")
+        .attr("class", "highlight-ring")
+        .attr("cx", 0).attr("cy", 0).attr("r", 12)
+        .attr("fill", "none")
+        .attr("stroke", colors.inner)
+        .attr("stroke-width", 2);
+
+      g.append("circle")
+        .attr("class", "outer")
+        .attr("cx", 0).attr("cy", 0).attr("r", 6)
+        .attr("fill", colors.outerFill)
+        .attr("stroke", colors.outerStroke)
+        .attr("stroke-width", 1)
+        .style("animation", "ripple-sm 3s ease-out infinite")
+        .style("animation-delay", "1.5s");
+
+      g.append("circle")
+        .attr("class", "inner")
+        .attr("cx", 0).attr("cy", 0).attr("r", 4)
+        .attr("fill", colors.inner)
+        .attr("opacity", 0.5);
+
+      g.append("text")
+        .attr("x", sp.labelDx)
+        .attr("y", sp.labelDy)
+        .attr("fill", colors.inner)
+        .attr("opacity", 0.4)
+        .attr("font-family", "DM Mono, monospace")
+        .attr("font-size", 8)
+        .attr("letter-spacing", "0.05em")
+        .attr("text-anchor", sp.anchor)
+        .text(sp.name);
+
+      // Hit area for hover tooltip
+      g.append("circle")
+        .attr("cx", 0).attr("cy", 0).attr("r", 14)
+        .attr("fill", "transparent")
+        .on("mouseenter", function(event) { showTooltip(sp, event); })
+        .on("mousemove", function(event) { showTooltip(sp, event); })
+        .on("mouseleave", hideTooltip);
+    });
+
+    // Card hover → highlight map dot + show mini-map
+    var miniMap = document.getElementById("mini-map");
+    var miniWrap = document.getElementById("mini-map-svg-wrap");
+    var miniLabel = document.getElementById("mini-map-label");
+
+    // Clone the SVG once for the mini-map
+    var svgClone = svgEl.node().cloneNode(true);
+    // Reset the zoom transform on the inner <g> so positioning math works
+    var innerG = svgClone.querySelector("g");
+    if (innerG) innerG.removeAttribute("transform");
+    // Remove animations from clone to keep it clean
+    svgClone.querySelectorAll("[style]").forEach(function(el) {
+      el.style.animation = "none";
+    });
+    miniWrap.appendChild(svgClone);
+
+    // Build a lookup of name → projected [x, y]
+    var allPoints = {};
+    chokepoints.forEach(function(cp) {
+      var pos = projection([cp.lng, cp.lat]);
+      allPoints[cp.fullName] = { x: pos[0], y: pos[1] };
+    });
+    secondaryPoints.forEach(function(sp) {
+      var pos = projection([sp.lng, sp.lat]);
+      allPoints[sp.fullName] = { x: pos[0], y: pos[1] };
+    });
+
+    var miniW = 240, miniH = 140;
+    var zoomFactor = 3;
+
+    function showMiniMap(name) {
+      var pt = allPoints[name];
+      if (!pt) return;
+
+      // Scale the SVG so 1 SVG unit = zoomFactor pixels in the mini-map
+      var scale = (miniW / width) * zoomFactor;
+      // Offset so the point is centered in the mini-map
+      var tx = miniW / 2 - pt.x * scale;
+      var ty = miniH / 2 - pt.y * scale;
+
+      svgClone.style.width = (width * scale) + "px";
+      svgClone.style.height = (height * scale) + "px";
+      svgClone.style.left = tx + "px";
+      svgClone.style.top = ty + "px";
+
+      miniLabel.textContent = name;
+      miniMap.classList.add("visible");
+    }
+
+    function hideMiniMap() {
+      miniMap.classList.remove("visible");
+    }
+
+    document.querySelectorAll(".chokepoint").forEach(function(card) {
+      var nameEl = card.querySelector(".chokepoint-name");
+      if (!nameEl) return;
+      var name = nameEl.textContent.trim();
+
+      card.addEventListener("mouseenter", function() {
+        var dot = svgEl.select('[data-name="' + name + '"]');
+        if (!dot.empty()) dot.classed("highlight", true);
+        showMiniMap(name);
+      });
+
+      card.addEventListener("mouseleave", function() {
+        var dot = svgEl.select('[data-name="' + name + '"]');
+        if (!dot.empty()) dot.classed("highlight", false);
+        hideMiniMap();
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
