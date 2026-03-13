@@ -1432,6 +1432,9 @@
     tooltip.classList.remove("visible");
   }
 
+  // Dismiss map tooltip on scroll (mobile tap leaves it stuck)
+  window.addEventListener("scroll", hideTooltip, { passive: true });
+
   d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(function(world) {
     var land = topojson.feature(world, world.objects.land);
     var borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
@@ -1675,13 +1678,20 @@
           }
         });
 
-        if (closest) {
+        if (!closest) {
+          // No cards in view — hide mini-map
+          if (activeHighlight) {
+            var prevDot = svgEl.select('[data-name="' + activeHighlight + '"]');
+            if (!prevDot.empty()) prevDot.classed("highlight", false);
+            activeHighlight = null;
+          }
+          hideMiniMap();
+        } else {
           var nameEl = closest.querySelector(".chokepoint-name");
           if (!nameEl) return;
           var name = nameEl.textContent.trim();
 
           if (name !== activeHighlight) {
-            // Clear previous
             if (activeHighlight) {
               var prevDot = svgEl.select('[data-name="' + activeHighlight + '"]');
               if (!prevDot.empty()) prevDot.classed("highlight", false);
