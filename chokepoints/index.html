@@ -1685,7 +1685,19 @@
       var allCards = Array.from(document.querySelectorAll(".chokepoint"));
       var ticking = false;
 
+      var footerEl = document.querySelector("footer");
+      var miniMapEl = document.getElementById("mini-map");
+
       function updateOnScroll() {
+        // Push mini-map up so it doesn't overlap the footer
+        var footerRect = footerEl.getBoundingClientRect();
+        var overlap = window.innerHeight - footerRect.top + 24;
+        if (overlap > 0) {
+          miniMapEl.style.bottom = overlap + "px";
+        } else {
+          miniMapEl.style.bottom = "";
+        }
+
         var vpCenter = window.innerHeight / 2;
         var closest = null;
         var closestDist = Infinity;
