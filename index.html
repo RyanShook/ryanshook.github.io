@@ -471,6 +471,61 @@
 			margin: 0;
 		}
 
+		/* featured (full-width) competency card — overhead/cost angle */
+		.competency-card.featured {
+			grid-column: 1 / -1;
+			background: linear-gradient(135deg, rgba(252, 95, 43, 0.05), rgba(252, 95, 43, 0.02));
+			border: 1px solid var(--color-accent-soft);
+			padding: 36px 32px;
+			display: grid;
+			grid-template-columns: 240px 1fr;
+			gap: 32px;
+			align-items: center;
+		}
+		.competency-card.featured:hover {
+			border-color: var(--color-accent);
+			box-shadow: 0 12px 32px rgba(252, 95, 43, 0.12);
+		}
+		.competency-card.featured .icon {
+			background: var(--color-accent);
+			color: #ffffff;
+			width: 56px;
+			height: 56px;
+			margin-bottom: 0;
+		}
+		.competency-card.featured .icon svg { width: 28px; height: 28px; }
+		.competency-card.featured .featured-head {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+		}
+		.competency-card.featured .featured-eyebrow {
+			font-family: var(--font-mono);
+			font-size: 11px;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: var(--color-accent);
+			font-weight: 500;
+		}
+		.competency-card.featured h3 {
+			font-size: 24px;
+			letter-spacing: -0.022em;
+			margin: 0;
+			line-height: 1.2;
+		}
+		.competency-card.featured p {
+			color: var(--color-text);
+			font-size: 16px;
+			line-height: 1.6;
+		}
+		@media (max-width: 720px) {
+			.competency-card.featured {
+				grid-template-columns: 1fr;
+				gap: 20px;
+				padding: 28px;
+			}
+		}
+
 		/* ─── speaking section (split) ───────────────────────── */
 		.split {
 			display: grid;
@@ -712,7 +767,7 @@
 		<div class="container">
 			<div class="hero-grid">
 				<div class="hero-content">
-					<h1>Helping churches and nonprofits solve real problems with <span class="accent">AI</span> where it actually helps.</h1>
+					<h1>Helping churches solve real problems with <span class="accent">AI</span> where it actually helps.</h1>
 					<p class="lede">Mission-driven organizations face real challenges: deepening donor relationships, scaling operations, reaching people across more channels than ever. AI is changing what's possible in many of those areas, but the answer is rarely "add AI." It's choosing the right tools, integrating them carefully, and protecting what's already working. I help churches and nonprofits of every size make those calls.</p>
 					<p class="lede" style="font-size:15px;color:rgba(255,255,255,0.55);margin-bottom:32px;">Currently leading digital strategy at <a href="https://wc.org">Woodlands Church</a>, a multi-site organization across Texas. Fifteen years partnering with churches and Christian organizations to spread the gospel of hope and maximize impact.</p>
 
@@ -841,6 +896,19 @@
 					</span>
 					<h3>Digital ministry &amp; engagement</h3>
 					<p>Churches and nonprofits today serve people across multiple campuses, time zones, and screens. I help teams design digital discipleship platforms, virtual ministry experiences, and engagement systems that meet people where they actually are, without losing the human texture of the work.</p>
+				</article>
+
+				<article class="competency-card featured">
+					<div class="featured-head">
+						<span class="icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+						</span>
+						<div>
+							<span class="featured-eyebrow">And often the most immediate impact</span>
+							<h3>Reducing overhead and operating costs</h3>
+						</div>
+					</div>
+					<p>Mission-driven teams run lean. The same AI and automation tools that drive strategy can quietly reduce the cost of operations: fewer hours on repetitive work, less software sprawl, leaner reconciliation and reporting workflows. I help organizations identify the highest-value efficiency wins and roll them out without sacrificing oversight or quality. Every dollar redirected from overhead is a dollar back into the mission.</p>
 				</article>
 			</div>
 		</div>
