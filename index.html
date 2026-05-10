@@ -414,8 +414,20 @@
 			filter: brightness(0) invert(1);
 		}
 		@media (max-width: 720px) {
-			.hero-grid { grid-template-columns: 1fr; gap: 40px; }
-			.hero-portrait { max-width: 360px; margin: 0 auto; }
+			.hero-grid {
+				display: flex;
+				flex-direction: column;
+				gap: 28px;
+			}
+			.hero-content { display: contents; }
+			.hero-content > h1 { order: 1; }
+			.hero-portrait {
+				order: 2;
+				max-width: 280px;
+				margin: 0 auto;
+			}
+			.hero-content > .lede { order: 3; }
+			.hero-content > .hero-socials { order: 4; }
 			.logo-row { grid-template-columns: repeat(2, 1fr); gap: 24px; }
 		}
 
