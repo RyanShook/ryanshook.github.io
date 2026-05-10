@@ -394,24 +394,23 @@
 			align-items: center;
 		}
 		.logo-mark {
-			text-align: center;
-			color: rgba(255, 255, 255, 0.78);
-			font-weight: 700;
-			letter-spacing: -0.018em;
-			font-size: clamp(14px, 1.4vw, 18px);
-			line-height: 1.1;
-			transition: color 160ms ease, transform 160ms ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 48px;
 		}
-		.logo-mark:hover { color: #ffffff; }
-		.logo-mark .super {
-			display: block;
-			font-family: var(--font-mono);
-			font-size: 10px;
-			font-weight: 400;
-			letter-spacing: 0.18em;
-			color: rgba(255, 255, 255, 0.4);
-			text-transform: uppercase;
-			margin-bottom: 4px;
+		.logo-mark img {
+			max-height: 36px;
+			width: auto;
+			max-width: 100%;
+			opacity: 0.78;
+			transition: opacity 160ms ease;
+			object-fit: contain;
+		}
+		.logo-mark:hover img { opacity: 1; }
+		/* Logos that ship in dark fill — flatten to white for the dark hero band */
+		.logo-mark.invert img {
+			filter: brightness(0) invert(1);
 		}
 		@media (max-width: 720px) {
 			.hero-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -820,10 +819,10 @@
 					<span class="eyebrow on-dark">Churches I've worked with</span>
 				</div>
 				<div class="logo-row">
-					<div class="logo-mark">Woodlands Church</div>
-					<div class="logo-mark">Life.Church</div>
-					<div class="logo-mark">Elevation Church</div>
-					<div class="logo-mark">Saddleback Church</div>
+					<div class="logo-mark"><img src="images/logos/woodlands.png" alt="Woodlands Church" loading="lazy"></div>
+					<div class="logo-mark invert"><img src="images/logos/lifechurch.svg" alt="Life.Church" loading="lazy"></div>
+					<div class="logo-mark"><img src="images/logos/elevation.png" alt="Elevation Church" loading="lazy"></div>
+					<div class="logo-mark invert"><img src="images/logos/saddleback.svg" alt="Saddleback Church" loading="lazy"></div>
 				</div>
 			</div>
 		</div>
