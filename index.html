@@ -494,61 +494,6 @@
 			margin: 0;
 		}
 
-		/* featured (full-width) competency card — overhead/cost angle */
-		.competency-card.featured {
-			grid-column: 1 / -1;
-			background: linear-gradient(135deg, rgba(252, 95, 43, 0.05), rgba(252, 95, 43, 0.02));
-			border: 1px solid var(--color-accent-soft);
-			padding: 36px 32px;
-			display: grid;
-			grid-template-columns: 240px 1fr;
-			gap: 32px;
-			align-items: center;
-		}
-		.competency-card.featured:hover {
-			border-color: var(--color-accent);
-			box-shadow: 0 12px 32px rgba(252, 95, 43, 0.12);
-		}
-		.competency-card.featured .icon {
-			background: var(--color-accent);
-			color: #ffffff;
-			width: 56px;
-			height: 56px;
-			margin-bottom: 0;
-		}
-		.competency-card.featured .icon svg { width: 28px; height: 28px; }
-		.competency-card.featured .featured-head {
-			display: flex;
-			flex-direction: column;
-			gap: 12px;
-		}
-		.competency-card.featured .featured-eyebrow {
-			font-family: var(--font-mono);
-			font-size: 11px;
-			letter-spacing: 0.12em;
-			text-transform: uppercase;
-			color: var(--color-accent);
-			font-weight: 500;
-		}
-		.competency-card.featured h3 {
-			font-size: 24px;
-			letter-spacing: -0.022em;
-			margin: 0;
-			line-height: 1.2;
-		}
-		.competency-card.featured p {
-			color: var(--color-text);
-			font-size: 16px;
-			line-height: 1.6;
-		}
-		@media (max-width: 720px) {
-			.competency-card.featured {
-				grid-template-columns: 1fr;
-				gap: 20px;
-				padding: 28px;
-			}
-		}
-
 		/* ─── speaking section (split) ───────────────────────── */
 		.split {
 			display: grid;
@@ -586,8 +531,6 @@
 		.mission {
 			background: var(--color-bg);
 			padding: 96px 0;
-			border-top: 1px solid var(--color-border);
-			border-bottom: 1px solid var(--color-border);
 		}
 		.mission-inner {
 			max-width: 880px;
@@ -660,39 +603,6 @@
 			text-transform: uppercase;
 		}
 
-		/* ─── recognition grid ───────────────────────────────── */
-		.recognition-list {
-			list-style: none;
-			padding: 0;
-			margin: 24px 0 0;
-			display: grid;
-			grid-template-columns: 1fr;
-			gap: 12px;
-		}
-		.recognition-list li {
-			display: flex;
-			gap: 14px;
-			padding: 16px 18px;
-			background: #ffffff;
-			border: 1px solid var(--color-border);
-			border-radius: var(--radius-card);
-			font-size: 15px;
-			line-height: 1.5;
-			color: var(--color-text);
-		}
-		.recognition-list li .icon {
-			flex-shrink: 0;
-			width: 32px;
-			height: 32px;
-			border-radius: 8px;
-			background: var(--color-surface);
-			color: var(--color-accent);
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-		}
-		.recognition-list li .icon svg { width: 16px; height: 16px; }
-
 		/* ─── final CTA ──────────────────────────────────────── */
 		.final-cta {
 			background: var(--color-inverse-bg);
@@ -739,7 +649,7 @@
 		.footer-strip {
 			background: var(--color-inverse-bg);
 			color: rgba(255, 255, 255, 0.65);
-			border-top: 1px solid rgba(255, 255, 255, 0.08);
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
 			padding: 32px 0;
 			font-size: 13px;
 			font-family: var(--font-mono);
