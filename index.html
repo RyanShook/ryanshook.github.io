@@ -376,36 +376,47 @@
 			background: var(--color-accent);
 		}
 
-		/* proof bar inside hero (existing copy promoted to visual emphasis) */
-		.proof-bar {
+		/* logo strip inside hero (placeholder wordmarks; swap in SVGs when available) */
+		.logo-strip {
 			margin-top: 64px;
 			padding: 32px 0;
 			border-top: 1px solid rgba(255, 255, 255, 0.1);
 			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 		}
-		.proof-grid {
+		.logo-strip-label {
+			text-align: center;
+			margin-bottom: 24px;
+		}
+		.logo-row {
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
-			gap: 32px;
+			gap: 24px;
+			align-items: center;
 		}
-		.proof-item .num {
-			font-size: 32px;
+		.logo-mark {
+			text-align: center;
+			color: rgba(255, 255, 255, 0.78);
 			font-weight: 700;
-			letter-spacing: -0.025em;
-			color: var(--color-accent);
-			line-height: 1;
-			margin-bottom: 8px;
+			letter-spacing: -0.018em;
+			font-size: clamp(14px, 1.4vw, 18px);
+			line-height: 1.1;
+			transition: color 160ms ease, transform 160ms ease;
 		}
-		.proof-item .label {
-			font-size: 13px;
-			color: rgba(255, 255, 255, 0.7);
-			letter-spacing: -0.005em;
-			line-height: 1.4;
+		.logo-mark:hover { color: #ffffff; }
+		.logo-mark .super {
+			display: block;
+			font-family: var(--font-mono);
+			font-size: 10px;
+			font-weight: 400;
+			letter-spacing: 0.18em;
+			color: rgba(255, 255, 255, 0.4);
+			text-transform: uppercase;
+			margin-bottom: 4px;
 		}
 		@media (max-width: 720px) {
 			.hero-grid { grid-template-columns: 1fr; gap: 40px; }
 			.hero-portrait { max-width: 360px; margin: 0 auto; }
-			.proof-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+			.logo-row { grid-template-columns: repeat(2, 1fr); gap: 24px; }
 		}
 
 		/* ─── core competencies ──────────────────────────────── */
@@ -803,25 +814,16 @@
 				</div>
 			</div>
 
-			<!-- proof bar: existing copy phrases promoted to visual emphasis -->
-			<div class="proof-bar">
-				<div class="proof-grid">
-					<div class="proof-item">
-						<div class="num">15+</div>
-						<div class="label">years of experience</div>
-					</div>
-					<div class="proof-item">
-						<div class="num">40–60%</div>
-						<div class="label">reduction in manual processes</div>
-					</div>
-					<div class="proof-item">
-						<div class="num">NYT</div>
-						<div class="label">Bestselling Author</div>
-					</div>
-					<div class="proof-item">
-						<div class="num">Multi-site</div>
-						<div class="label">Woodlands Church across Texas</div>
-					</div>
+			<!-- logo strip (text wordmarks; swap in real SVG logos when available) -->
+			<div class="logo-strip">
+				<div class="logo-strip-label">
+					<span class="eyebrow on-dark">Working with churches like</span>
+				</div>
+				<div class="logo-row">
+					<div class="logo-mark">Woodlands Church</div>
+					<div class="logo-mark">Life.Church</div>
+					<div class="logo-mark">Elevation Church</div>
+					<div class="logo-mark">Saddleback Church</div>
 				</div>
 			</div>
 		</div>
