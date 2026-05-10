@@ -242,8 +242,8 @@
 		}
 		.nav-mark {
 			font-weight: 700;
-			font-size: 17px;
-			letter-spacing: -0.018em;
+			font-size: 22px;
+			letter-spacing: -0.022em;
 		}
 		.nav-mark .dot { color: var(--color-accent); }
 		.nav-links {
@@ -263,6 +263,8 @@
 			transition: color 120ms ease, background 120ms ease;
 		}
 		.nav-links a:hover { color: var(--color-accent); background: var(--color-surface); }
+		.nav-links a.accent { color: var(--color-accent); }
+		.nav-links a.accent:hover { color: var(--color-accent); background: rgba(252, 95, 43, 0.08); }
 		.nav-cta { margin-left: 8px; padding: 10px 18px; font-size: 14px; }
 		@media (max-width: 720px) {
 			.nav-links li:not(:last-child) { display: none; }
@@ -689,7 +691,7 @@
 					<li><a href="#work">Work</a></li>
 					<li><a href="#speaking">Speaking</a></li>
 					<li><a href="https://ryanshook.org/blog">Blog</a></li>
-					<li><a href="#contact">Contact</a></li>
+					<li><a href="#contact" class="accent">Contact</a></li>
 				</ul>
 			</nav>
 		</div>
