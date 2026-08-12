@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Maritime Chokepoints — Interactive Map & Strategic Analysis</title>
-<meta name="description" content="Interactive reference guide to the world's most critical maritime chokepoints. Explore an interactive D3.js map of 18 strategic straits and waterways that control global trade, energy supply chains, and naval power projection.">
-<meta name="keywords" content="maritime chokepoints, Strait of Hormuz, Strait of Malacca, Suez Canal, Panama Canal, global trade routes, shipping lanes, geopolitics, naval strategy, maritime security, Bab el-Mandeb, Bosphorus, Gibraltar, Cape of Good Hope">
+<meta name="description" content="Interactive reference guide to the world's most critical maritime chokepoints, updated August 2026 — with the Strait of Hormuz closed and the Red Sea under a Houthi blockade. Explore an interactive D3.js map of 18 strategic straits and waterways that control global trade, energy supply chains, and naval power projection.">
+<meta name="keywords" content="maritime chokepoints, Strait of Hormuz closure, Strait of Malacca, Suez Canal, Panama Canal, global trade routes, shipping lanes, geopolitics, naval strategy, maritime security, Bab el-Mandeb, Bosphorus, Gibraltar, Cape of Good Hope, Red Sea blockade">
 <meta name="author" content="Ryan Shook">
 <link rel="canonical" href="https://ryanshook.org/chokepoints/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
 <meta property="og:title" content="Global Maritime Chokepoints — Interactive Map & Strategic Analysis">
-<meta property="og:description" content="Interactive reference guide to 18 strategic straits and waterways that control global trade, energy supply chains, and naval power projection.">
+<meta property="og:description" content="Interactive reference guide to 18 strategic straits and waterways that control global trade, energy supply chains, and naval power projection. Updated August 2026: Hormuz closed, Red Sea blockaded, Panama drafting down.">
 <meta property="og:url" content="https://ryanshook.org/chokepoints/">
 <meta property="og:site_name" content="Ryan Shook">
 <meta property="og:image" content="https://ryanshook.org/chokepoints/images/og-map.png">
@@ -20,7 +20,7 @@
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Global Maritime Chokepoints — Interactive Map & Analysis">
-<meta name="twitter:description" content="Interactive reference guide to 18 strategic straits and waterways that control global trade and energy supply chains.">
+<meta name="twitter:description" content="Interactive reference guide to 18 strategic straits and waterways that control global trade and energy supply chains. Updated August 2026.">
 <meta name="twitter:site" content="@ryanshook">
 <meta name="twitter:image" content="https://ryanshook.org/chokepoints/images/og-map.png">
 
@@ -39,6 +39,8 @@
   "@type": "Article",
   "headline": "Global Maritime Chokepoints — Interactive Map & Strategic Analysis",
   "description": "Interactive reference guide to the world's most critical maritime chokepoints, featuring an interactive map of 18 strategic straits and waterways.",
+  "datePublished": "2026-03-12",
+  "dateModified": "2026-08-12",
   "author": {
     "@type": "Person",
     "name": "Ryan Shook",
@@ -74,6 +76,8 @@
     --accent2: #4a9eff;
     --danger: #ff4d4d;
     --danger-dim: rgba(255,77,77,0.15);
+    --warn: #f0a020;
+    --warn-dim: rgba(240,160,32,0.13);
   }
 
   body {
@@ -291,6 +295,12 @@
     border: 1px solid rgba(255,77,77,0.25);
   }
 
+  .tag-warning {
+    background: var(--warn-dim);
+    color: var(--warn);
+    border: 1px solid rgba(240,160,32,0.25);
+  }
+
   .tag-controlled {
     background: rgba(74,158,255,0.1);
     color: var(--accent2);
@@ -346,6 +356,7 @@
   }
 
   .cp-stat-val.danger { color: var(--danger); }
+  .cp-stat-val.warn { color: var(--warn); }
   .cp-stat-val.blue { color: var(--accent2); }
   .cp-stat-val.gold { color: var(--accent); }
 
@@ -436,6 +447,15 @@
 
   .chokepoint-dot.critical circle.inner {
     fill: var(--danger);
+  }
+
+  .chokepoint-dot.restricted circle.outer {
+    fill: rgba(240,160,32,0.12);
+    stroke: rgba(240,160,32,0.4);
+  }
+
+  .chokepoint-dot.restricted circle.inner {
+    fill: var(--warn);
   }
 
   .chokepoint-dot.controlled circle.outer {
@@ -766,12 +786,16 @@
   <header>
     <h1>Global Maritime<br><em>Chokepoints</em></h1>
     <div class="header-meta">
+      <span class="status-badge"><span class="status-dot"></span>HORMUZ CLOSED · RED SEA BLOCKADED</span>
+      <p class="date-stamp">Updated 12 August 2026</p>
+    </div>
+    <div class="header-meta" style="margin-top:1rem;">
       <p class="date-stamp">A reference guide to the world's most strategic waterways</p>
     </div>
   </header>
 
   <!-- Interactive World Map: D3.js SVG map showing all 18 chokepoints with zoom/pan controls -->
-  <!-- Map dots are color-coded: red = impacted, blue = open/controlled, gold = secondary -->
+  <!-- Map dots are color-coded by current status: red = disrupted (closed/blockaded), amber = restricted, blue = primary and open, gold = secondary -->
   <section class="map-section" aria-label="Interactive world map of maritime chokepoints">
     <div class="map-frame">
 
@@ -781,13 +805,20 @@
         <button type="button" id="zoom-out" title="Zoom out">−</button>
       </div>
       <div class="map-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#4a9eff;"></div>Primary<div class="legend-tip"><div class="legend-tip-name">Primary Chokepoint</div><div class="legend-tip-label">No cost-effective alternative</div><div class="legend-tip-desc">Straits and canals where closure forces massive detours or cuts off access to entire seas and resource regions. These are the highest-consequence bottlenecks in global trade.</div></div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ff4d4d;"></div>Disrupted<div class="legend-tip"><div class="legend-tip-name">Disrupted</div><div class="legend-tip-label">Closed or under blockade</div><div class="legend-tip-desc">Traffic is materially blocked right now, not merely at risk. As of August 2026 this covers the Strait of Hormuz, closed since March, and Bab el-Mandeb under a Houthi blockade.</div></div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f0a020;"></div>Restricted<div class="legend-tip"><div class="legend-tip-name">Restricted</div><div class="legend-tip-label">Open, but not running normally</div><div class="legend-tip-desc">Passable with reduced throughput — from draft limits, security caution, or collapsed demand. The Suez Canal and Panama Canal are both here in August 2026, for opposite reasons.</div></div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4a9eff;"></div>Primary · Open<div class="legend-tip"><div class="legend-tip-name">Primary Chokepoint</div><div class="legend-tip-label">No cost-effective alternative</div><div class="legend-tip-desc">Straits and canals where closure forces massive detours or cuts off access to entire seas and resource regions. These are the highest-consequence bottlenecks in global trade — and currently operating normally.</div></div></div>
         <div class="legend-item"><div class="legend-dot" style="background:#c8a96e;opacity:0.6;"></div>Secondary<div class="legend-tip"><div class="legend-tip-name">Secondary Chokepoint</div><div class="legend-tip-label">Alternatives exist</div><div class="legend-tip-desc">Passages that have bypass routes, but disruption would still cause notable detours, added shipping costs, and supply chain delays across affected regions.</div></div></div>
       </div>
     </div>
   </section>
 
-  <p class="overview-text">There are roughly 200 straits worldwide, but only a handful function as true chokepoints — narrow passages where geography concentrates shipping into corridors that cannot be easily bypassed. This page covers 18 of the most strategically significant. They matter because the global economy runs on maritime trade: over 80% of world goods move by sea, and disruption at any one of these bottlenecks can ripple across energy markets, supply chains, and food security within days.</p>
+  <p class="overview-text">There are roughly 200 straits worldwide, but only a handful function as true chokepoints — narrow passages where geography concentrates shipping into corridors that cannot be easily bypassed. This page covers 18 of the most strategically significant. They matter because the global economy runs on maritime trade: over 80% of world goods move by sea, and disruption at any one of these bottlenecks can ripple across energy markets, supply chains, and food security within days. That is not hypothetical in 2026: two of the three most important energy chokepoints — Hormuz and Bab el-Mandeb — are disrupted simultaneously as of this update.</p>
+
+  <!-- Current Situation: live status summary. Update alongside the status tags below. -->
+  <div class="highlight-box">
+    <strong>Situation as of 12 August 2026.</strong> The <strong>Strait of Hormuz</strong> has been closed to normal commercial traffic since Iran declared it shut on 4 March 2026, following the start of Operation Epic Fury on 28 February. Transits are running roughly 90% below the pre-crisis baseline — 84 vessels in the week to 2 August, against a historical average near 138 per day — with more than 70 ships still stranded inside the Gulf and war-risk premiums up four- to six-fold. In the Red Sea, a Houthi maritime blockade of Saudi Arabia has cut <strong>Bab el-Mandeb</strong> traffic 24%, and tanker transits 42%. Asia–Europe shipping has shifted decisively onto the <strong>Cape of Good Hope</strong>, and the <strong>Panama Canal</strong> is stepping drafts down again as a strengthening El Niño draws down Gatun Lake. Brent crude peaked at $126 in March and sits near $88.
+  </div>
 
   <!-- Primary Chokepoints: 9 critical straits and canals with detailed analysis -->
   <!-- Each card includes satellite imagery, geographic context, strategic significance, and key statistics -->
@@ -799,11 +830,12 @@
       <img class="chokepoint-img" src="images/hormuz.jpg" alt="Strait of Hormuz satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Strait of Hormuz</div>
-        <span class="chokepoint-tag tag-critical">IMPACTED</span>
+        <span class="chokepoint-tag tag-critical">CLOSED</span>
       </div>
       <div class="chokepoint-region">Persian Gulf · Iran / Oman</div>
-      <div class="chokepoint-desc">The world's most critical energy chokepoint — with no maritime bypass route. Iran sits along its entire northern coast, giving it the ability to threaten closure with mines, missiles, and fast attack boats. Limited pipeline alternatives exist but cannot replace the ~20 million barrels/day that transit by sea.</div>
+      <div class="chokepoint-desc">The world's most critical energy chokepoint — with no maritime bypass route — and, since 4 March 2026, closed. Iran declared the strait shut days after Operation Epic Fury began, and the IRGC has enforced it with mines, missiles, and fast attack boats. Traffic collapsed to near zero, recovering only to a trickle dominated by Iranian- and Chinese-linked vessels using the northern corridor. Pipelines through Saudi Arabia and the UAE cannot come close to replacing the ~20 million barrels/day that normally transit by sea.</div>
       <div class="chokepoint-stats">
+        <div class="cp-stat"><div class="cp-stat-val danger">−90%</div><div class="cp-stat-label">transits vs. normal</div></div>
         <div class="cp-stat"><div class="cp-stat-val danger">20%</div><div class="cp-stat-label">of world oil</div></div>
         <div class="cp-stat"><div class="cp-stat-val danger">21 mi</div><div class="cp-stat-label">width at narrowest</div></div>
         <div class="cp-stat"><div class="cp-stat-val">No maritime bypass</div><div class="cp-stat-label">bypass route</div></div>
@@ -817,7 +849,7 @@
         <span class="chokepoint-tag tag-controlled">OPEN</span>
       </div>
       <div class="chokepoint-region">Southeast Asia · Malaysia / Indonesia / Singapore</div>
-      <div class="chokepoint-desc">The busiest chokepoint by ship count and China, Japan, and South Korea's primary oil lifeline from the Middle East. A blockage here would rival Hormuz in economic impact. Piracy has historically been a concern; Singapore manages heavy traffic coordination through one of the narrowest shipping lanes in the world.</div>
+      <div class="chokepoint-desc">The busiest chokepoint by ship count and, normally, China, Japan, and South Korea's primary oil lifeline from the Middle East. It remains fully open — but the Hormuz closure has choked off much of the Gulf crude that gives it that role, a reminder that a chokepoint's importance depends on what is still flowing into it. A blockage here would rival Hormuz in economic impact. Singapore coordinates heavy traffic through one of the narrowest shipping lanes in the world.</div>
       <div class="chokepoint-stats">
         <div class="cp-stat"><div class="cp-stat-val blue">25%</div><div class="cp-stat-label">of global trade</div></div>
         <div class="cp-stat"><div class="cp-stat-val blue">~94,000</div><div class="cp-stat-label">ships/year</div></div>
@@ -829,13 +861,14 @@
       <img class="chokepoint-img" src="images/suez.jpg" alt="Suez Canal satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Suez Canal</div>
-        <span class="chokepoint-tag tag-controlled">OPEN</span>
+        <span class="chokepoint-tag tag-warning">REDUCED</span>
       </div>
       <div class="chokepoint-region">Egypt · Mediterranean / Red Sea</div>
-      <div class="chokepoint-desc">Man-made canal connecting Mediterranean to Red Sea. Carries ~12% of global trade and ~10% of oil. The Ever Given blockage (2021) cost an estimated $9.6B/day. When Bab el-Mandeb is blocked, the Suez route becomes useless — ships must reroute around Africa regardless.</div>
+      <div class="chokepoint-desc">Man-made canal connecting Mediterranean to Red Sea. Physically open and never blocked, but starved of traffic: carriers began cautiously returning in early 2026 before renewed Red Sea attacks pushed them back onto the Cape route. Volumes are recovering off a low base — about 275 transits a week this August, and 1,182 vessels in April for roughly $425M in monthly tolls. The canal's problem is downstream: when Bab el-Mandeb is unsafe, the Suez shortcut is worthless, because ships must round Africa regardless.</div>
       <div class="chokepoint-stats">
-        <div class="cp-stat"><div class="cp-stat-val blue">12%</div><div class="cp-stat-label">of global trade</div></div>
-        <div class="cp-stat"><div class="cp-stat-val blue">~20,000</div><div class="cp-stat-label">ships/year</div></div>
+        <div class="cp-stat"><div class="cp-stat-val warn">~275</div><div class="cp-stat-label">transits/week</div></div>
+        <div class="cp-stat"><div class="cp-stat-val warn">12%</div><div class="cp-stat-label">of global trade (normal)</div></div>
+        <div class="cp-stat"><div class="cp-stat-val warn">~$7B</div><div class="cp-stat-label">FY2025 revenue</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Cape of Good Hope</div><div class="cp-stat-label">bypass route</div></div>
       </div>
     </article>
@@ -844,13 +877,14 @@
       <img class="chokepoint-img" src="images/bab-el-mandeb.jpg" alt="Bab el-Mandeb satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Bab el-Mandeb</div>
-        <span class="chokepoint-tag tag-controlled">OPEN</span>
+        <span class="chokepoint-tag tag-critical">BLOCKADED</span>
       </div>
       <div class="chokepoint-region">Red Sea Gateway · Yemen / Djibouti / Eritrea</div>
-      <div class="chokepoint-desc">The southern gateway to the Suez Canal. All shipping between Asia and Europe via Suez must pass through this 18-mile-wide strait. Its proximity to Yemen makes it vulnerable to non-state actors and regional instability. When blocked, ships must reroute around the entire African continent.</div>
+      <div class="chokepoint-desc">The southern gateway to the Suez Canal, and the clearest case of a chokepoint held hostage by a non-state actor. Yemen's Houthis resumed attacks on 28 February 2026 and have since declared a maritime blockade of Saudi Arabia, deploying missiles and drones against shipping and pushing operations north toward Saudi crude terminals. Transits fell 24% — 354 vessels the week before the blockade, 269 the week after — with tanker traffic down 42%. Saudi exports are coping through lighter loadings and the Sumed pipeline.</div>
       <div class="chokepoint-stats">
-        <div class="cp-stat"><div class="cp-stat-val blue">10-12%</div><div class="cp-stat-label">of global trade</div></div>
-        <div class="cp-stat"><div class="cp-stat-val blue">18 mi</div><div class="cp-stat-label">width</div></div>
+        <div class="cp-stat"><div class="cp-stat-val danger">−24%</div><div class="cp-stat-label">transits</div></div>
+        <div class="cp-stat"><div class="cp-stat-val danger">−42%</div><div class="cp-stat-label">tanker transits</div></div>
+        <div class="cp-stat"><div class="cp-stat-val danger">18 mi</div><div class="cp-stat-label">width</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Cape of Good Hope</div><div class="cp-stat-label">bypass route</div></div>
       </div>
     </article>
@@ -859,14 +893,15 @@
       <img class="chokepoint-img" src="images/panama.jpg" alt="Panama Canal satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Panama Canal</div>
-        <span class="chokepoint-tag tag-controlled">OPEN</span>
+        <span class="chokepoint-tag tag-warning">RESTRICTED</span>
       </div>
       <div class="chokepoint-region">Central America · Atlantic / Pacific</div>
-      <div class="chokepoint-desc">The primary Atlantic-Pacific shortcut, carrying ~5% of global trade. Relies on freshwater from Gatun Lake to operate its lock system, making it uniquely vulnerable to drought. A severe drought in 2023-24 forced Panama to reduce daily transits by ~40% — a climate-driven chokepoint disruption.</div>
+      <div class="chokepoint-desc">The primary Atlantic-Pacific shortcut, carrying ~5% of global trade. Its locks run on freshwater from Gatun Lake, making it the one major chokepoint constrained by weather rather than politics. It fully recovered from the 2023–24 drought — FY2025 revenue rose 14.4% to $5.7B on 13,404 transits — but a strengthening El Niño has forced a fresh series of step-downs: Neopanamax draft cut to 14.78m on 15 August, 14.63m on 26 August, and 14.48m from 3 September. Transit slots are being held near 36 a day; ships simply carry less.</div>
       <div class="chokepoint-stats">
-        <div class="cp-stat"><div class="cp-stat-val blue">5%</div><div class="cp-stat-label">of global trade</div></div>
-        <div class="cp-stat"><div class="cp-stat-val blue">~14,000</div><div class="cp-stat-label">ships/year</div></div>
-        <div class="cp-stat"><div class="cp-stat-val">Drake Passage</div><div class="cp-stat-label">bypass route</div></div>
+        <div class="cp-stat"><div class="cp-stat-val warn">14.48 m</div><div class="cp-stat-label">max draft (Sept)</div></div>
+        <div class="cp-stat"><div class="cp-stat-val warn">5%</div><div class="cp-stat-label">of global trade</div></div>
+        <div class="cp-stat"><div class="cp-stat-val warn">13,404</div><div class="cp-stat-label">FY2025 transits</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">Cape Horn / Magellan</div><div class="cp-stat-label">bypass route</div></div>
       </div>
     </article>
 
@@ -877,7 +912,7 @@
         <span class="chokepoint-tag tag-controlled">OPEN</span>
       </div>
       <div class="chokepoint-region">Turkey · Black Sea / Mediterranean</div>
-      <div class="chokepoint-desc">Turkey controls both the Bosphorus and Dardanelles under the 1936 Montreux Convention, giving it legal authority to restrict warship passage in wartime. This single-nation control over a major waterway makes Turkey a pivotal gatekeeper between the Black Sea and the Mediterranean.</div>
+      <div class="chokepoint-desc">Turkey controls both the Bosphorus and Dardanelles under the 1936 Montreux Convention, giving it legal authority to restrict warship passage in wartime. This single-nation control over a major waterway makes Turkey a pivotal gatekeeper between the Black Sea and the Mediterranean. Commercial transit continues under Montreux through 2026, though after attacks on Black Sea shipping Ankara has layered on extra safety checks for selected bulk and energy vessels bound for Russian ports — brief delays, not closure.</div>
       <div class="chokepoint-stats">
         <div class="cp-stat"><div class="cp-stat-val blue">3%</div><div class="cp-stat-label">of global oil</div></div>
         <div class="cp-stat"><div class="cp-stat-val blue">Turkey</div><div class="cp-stat-label">controller</div></div>
@@ -904,14 +939,15 @@
       <img class="chokepoint-img" src="images/cape-good-hope.jpg" alt="Cape of Good Hope satellite image" loading="lazy" width="600" height="160">
       <div class="chokepoint-header">
         <div class="chokepoint-name">Cape of Good Hope</div>
-        <span class="chokepoint-tag tag-controlled">OPEN</span>
+        <span class="chokepoint-tag tag-controlled">SURGING</span>
       </div>
       <div class="chokepoint-region">South Africa · Atlantic / Indian Ocean</div>
-      <div class="chokepoint-desc">The primary alternative for vessels bypassing the Suez Canal or Bab el-Mandeb Strait. While it avoids high-risk areas like the Red Sea, it adds approximately 3,200 nautical miles and 10-14 days to a standard Asia-Europe journey.</div>
+      <div class="chokepoint-desc">Not a chokepoint so much as the release valve for two of them — and in 2026 it has become the default Asia–Europe routing rather than the exception. Traffic surged as the Red Sea emptied out. It is open water with no one able to close it, but the cost is structural: roughly 3,200 extra nautical miles, 10–14 extra days, $1–2M in added fuel per voyage, and container rates 30–60% above pre-diversion levels.</div>
       <div class="chokepoint-stats">
         <div class="cp-stat"><div class="cp-stat-val blue">+3,200 nmi</div><div class="cp-stat-label">added distance</div></div>
-        <div class="cp-stat"><div class="cp-stat-val blue">+12 days</div><div class="cp-stat-label">added transit</div></div>
-        <div class="cp-stat"><div class="cp-stat-val">Suez / Bab el-Mandeb</div><div class="cp-stat-label">bypass route</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">+10-14 days</div><div class="cp-stat-label">added transit</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">+30-60%</div><div class="cp-stat-label">container rates</div></div>
+        <div class="cp-stat"><div class="cp-stat-val">Suez / Bab el-Mandeb</div><div class="cp-stat-label">bypasses</div></div>
       </div>
     </article>
 
@@ -922,9 +958,9 @@
         <span class="chokepoint-tag tag-controlled">OPEN</span>
       </div>
       <div class="chokepoint-region">Baltic Sea outlet · Denmark / Sweden</div>
-      <div class="chokepoint-desc">The only maritime exit for Baltic Sea nations — Russia, Finland, Sweden, Poland, Germany, Estonia, Latvia, Lithuania. Russian oil and gas exports and Nordic trade all depend on these straits. NATO membership of Denmark and Sweden makes these straits geopolitically significant in any European security scenario.</div>
+      <div class="chokepoint-desc">The only maritime exit for Baltic Sea nations — Russia, Finland, Sweden, Poland, Germany, Estonia, Latvia, Lithuania. With Denmark and Sweden both in NATO, the alliance effectively holds the cork in the Baltic bottle. The live contest here is legal rather than military: roughly 175 shadow-fleet tankers move Russian crude through the straits each month, and Denmark funded expanded inspections in its 2026 budget — port-state boardings plus fuel-sulfur "sniffers" on the Great Belt Bridge — using environmental and safety law to pressure a trade it cannot lawfully stop.</div>
       <div class="chokepoint-stats">
-        <div class="cp-stat"><div class="cp-stat-val blue">Baltic exit</div><div class="cp-stat-label">function</div></div>
+        <div class="cp-stat"><div class="cp-stat-val blue">~175/mo</div><div class="cp-stat-label">shadow-fleet transits</div></div>
         <div class="cp-stat"><div class="cp-stat-val blue">NATO</div><div class="cp-stat-label">controlled</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Kiel Canal</div><div class="cp-stat-label">bypass route</div></div>
       </div>
@@ -946,7 +982,7 @@
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
       </div>
       <div class="chokepoint-region">East Asia · Taiwan / China</div>
-      <div class="chokepoint-desc">A 110-mile-wide passage carrying roughly 20% of global maritime trade by value, including critical semiconductor supply chains. One of the most geopolitically sensitive waterways in the world.</div>
+      <div class="chokepoint-desc">A 110-mile-wide passage carrying roughly 20% of global maritime trade by value, including critical semiconductor supply chains. Listed as secondary only because it is wide and currently open — by consequence it would rank first. 2026 has cut both ways: a PLA carrier transit in April and heavier Chinese Coast Guard patrolling, alongside a cautious restart of cross-strait exchanges.</div>
       <div class="chokepoint-stats">
         <div class="cp-stat"><div class="cp-stat-val gold">~20%</div><div class="cp-stat-label">of global trade</div></div>
         <div class="cp-stat"><div class="cp-stat-val gold">110 mi</div><div class="cp-stat-label">width</div></div>
@@ -1058,10 +1094,10 @@
         <span class="chokepoint-tag tag-secondary">SECONDARY</span>
       </div>
       <div class="chokepoint-region">Arctic · Russia's Northern Coast</div>
-      <div class="chokepoint-desc">An emerging bypass route across Russia's northern coast connecting Europe and Asia. Melting Arctic ice is making it more viable, potentially offering a shorter path that avoids Suez Canal taxes. Remains unpredictable due to sea ice.</div>
+      <div class="chokepoint-desc">A much-hyped bypass across Russia's Arctic coast that keeps underdelivering. Total cargo fell for a second straight year in 2025, to 37.0M tonnes — less than half Moscow's 80M-tonne target — even as through-traffic hit a record 103 transit voyages carrying 3.2M tonnes. Melting ice is widening the summer window, but escort costs, insurance, and sanctions matter more than ice does.</div>
       <div class="chokepoint-stats">
-        <div class="cp-stat"><div class="cp-stat-val gold">Emerging</div><div class="cp-stat-label">status</div></div>
-        <div class="cp-stat"><div class="cp-stat-val gold">Seasonal</div><div class="cp-stat-label">access</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">37.0 Mt</div><div class="cp-stat-label">2025 cargo (−2.3%)</div></div>
+        <div class="cp-stat"><div class="cp-stat-val gold">103</div><div class="cp-stat-label">transit voyages</div></div>
       </div>
     </article>
 
@@ -1071,7 +1107,7 @@
   <!-- Page Footer: Attribution and data sources -->
   <footer>
     <p class="footer-note">Created by <a href="https://ryanshook.org" style="color:var(--accent);text-decoration:none;">Ryan Shook</a> · <a href="mailto:ryan@ryanshook.org?subject=Maritime%20Chokepoints%20Edit" style="color:var(--accent);text-decoration:none;">Suggest an Edit</a></p>
-    <p class="footer-note">Sources: EIA, IEA, UNCTAD, Wikipedia</p>
+    <p class="footer-note">Last updated 12 August 2026 · Sources: EIA, IEA, UNCTAD, Lloyd's List Intelligence, Suez Canal Authority, Panama Canal Authority (ACP)</p>
   </footer>
 
 </main>
@@ -1149,6 +1185,7 @@
 
   var typeColors = {
     critical: { inner: "#ff4d4d", outerFill: "rgba(255,77,77,0.15)", outerStroke: "rgba(255,77,77,0.5)" },
+    restricted: { inner: "#f0a020", outerFill: "rgba(240,160,32,0.12)", outerStroke: "rgba(240,160,32,0.45)" },
     controlled: { inner: "#4a9eff", outerFill: "rgba(74,158,255,0.1)", outerStroke: "rgba(74,158,255,0.4)" },
     secondary: { inner: "#c8a96e", outerFill: "rgba(200,169,110,0.08)", outerStroke: "rgba(200,169,110,0.25)" }
   };
@@ -1159,7 +1196,7 @@
       labelDx: 10, labelDy: -6, anchor: "start",
       image: "images/taiwan.jpg",
       region: "East Asia \u00b7 Taiwan / China",
-      desc: "A 110-mile-wide passage carrying roughly 20% of global maritime trade by value, including critical semiconductor supply chains.",
+      desc: "Carries roughly 20% of global maritime trade by value, including semiconductor supply chains. Open, but heavily patrolled through 2026.",
       stats: [
         { val: "~20%", label: "of global trade", color: "#c8a96e" },
         { val: "110 mi", label: "width", color: "#c8a96e" }
@@ -1247,10 +1284,10 @@
       labelDx: 10, labelDy: -6, anchor: "start",
       image: "images/northern-sea-route.jpg",
       region: "Arctic \u00b7 Russia's Northern Coast",
-      desc: "Emerging Europe-Asia route across Russia's Arctic coast. Avoids Suez Canal but remains unpredictable due to sea ice.",
+      desc: "Europe-Asia route across Russia's Arctic coast. Cargo fell for a second straight year in 2025 despite record through-traffic.",
       stats: [
-        { val: "Emerging", label: "status", color: "#c8a96e" },
-        { val: "Seasonal", label: "access", color: "#c8a96e" }
+        { val: "37.0 Mt", label: "2025 cargo", color: "#c8a96e" },
+        { val: "103", label: "transit voyages", color: "#c8a96e" }
       ]
     }
   ];
@@ -1261,11 +1298,11 @@
       lat: 26.5, lng: 56.3, type: "critical",
       labelDx: 12, labelDy: -10, anchor: "start",
       region: "Persian Gulf \u00b7 Iran / Oman",
-      desc: "The world's most critical energy chokepoint \u2014 no bypass route exists. Iran controls the entire northern coast.",
+      desc: "Closed since 4 March 2026. Iran declared the strait shut and the IRGC has enforced it; transits are ~90% below normal.",
       image: "images/hormuz.jpg",
       stats: [
+        { val: "\u221290%", label: "transits vs. normal", color: "#ff4d4d" },
         { val: "20%", label: "of world oil", color: "#ff4d4d" },
-        { val: "21 mi", label: "width", color: "#ff4d4d" },
         { val: "No maritime bypass", label: "bypass route", color: "#c8a96e" }
       ]
     },
@@ -1274,7 +1311,7 @@
       lat: 2.5, lng: 101.5, type: "controlled",
       labelDx: -12, labelDy: -10, anchor: "end",
       region: "Southeast Asia \u00b7 Malaysia / Indonesia / Singapore",
-      desc: "The busiest chokepoint by ship count. Primary oil lifeline for China, Japan, and South Korea.",
+      desc: "The busiest chokepoint by ship count and open as normal — though the Hormuz closure has cut much of the Gulf crude it usually carries east.",
       image: "images/malacca.jpg",
       stats: [
         { val: "25%", label: "of global trade", color: "#4a9eff" },
@@ -1284,41 +1321,41 @@
     },
     {
       name: "SUEZ", fullName: "Suez Canal",
-      lat: 30.5, lng: 32.3, type: "controlled",
+      lat: 30.5, lng: 32.3, type: "restricted",
       labelDx: 12, labelDy: -8, anchor: "start",
       region: "Egypt \u00b7 Mediterranean / Red Sea",
-      desc: "Man-made canal carrying ~12% of global trade. The Ever Given blockage (2021) cost ~$9.6B/day.",
+      desc: "Open but starved of traffic while the Red Sea stays unsafe. Running ~275 transits a week, far below its ~12%-of-global-trade norm.",
       image: "images/suez.jpg",
       stats: [
-        { val: "12%", label: "of global trade", color: "#4a9eff" },
-        { val: "~20K", label: "ships/year", color: "#4a9eff" },
+        { val: "~275", label: "transits/week", color: "#f0a020" },
+        { val: "12%", label: "of trade (normal)", color: "#f0a020" },
         { val: "Cape of Good Hope", label: "bypass route", color: "#c8a96e" }
       ]
     },
     {
       name: "BAB EL-MANDEB", fullName: "Bab el-Mandeb",
-      lat: 12.6, lng: 43.3, type: "controlled",
+      lat: 12.6, lng: 43.3, type: "critical",
       labelDx: 12, labelDy: 4, anchor: "start",
       region: "Red Sea Gateway \u00b7 Yemen / Djibouti / Eritrea",
-      desc: "Southern gateway to the Suez Canal. When blocked, the entire Suez route becomes useless.",
+      desc: "Under a Houthi maritime blockade of Saudi Arabia. Transits down 24%, tankers down 42%. When it closes, the Suez route becomes useless.",
       image: "images/bab-el-mandeb.jpg",
       stats: [
-        { val: "10-12%", label: "of global trade", color: "#4a9eff" },
-        { val: "18 mi", label: "width", color: "#4a9eff" },
+        { val: "\u221224%", label: "transits", color: "#ff4d4d" },
+        { val: "\u221242%", label: "tankers", color: "#ff4d4d" },
         { val: "Cape of Good Hope", label: "bypass route", color: "#c8a96e" }
       ]
     },
     {
       name: "PANAMA", fullName: "Panama Canal",
-      lat: 9.1, lng: -79.7, type: "controlled",
+      lat: 9.1, lng: -79.7, type: "restricted",
       labelDx: 12, labelDy: -8, anchor: "start",
       region: "Central America \u00b7 Atlantic / Pacific",
-      desc: "Primary Atlantic-Pacific shortcut. Uniquely vulnerable to drought due to its freshwater lock system.",
+      desc: "Open, but stepping drafts down again as El Ni\u00f1o draws down Gatun Lake. Neopanamax limit falls to 14.48m by 3 September.",
       image: "images/panama.jpg",
       stats: [
-        { val: "5%", label: "of global trade", color: "#4a9eff" },
-        { val: "~14K", label: "ships/year", color: "#4a9eff" },
-        { val: "Drake", label: "bypass", color: "#c8a96e" }
+        { val: "14.48 m", label: "max draft (Sept)", color: "#f0a020" },
+        { val: "13,404", label: "FY2025 transits", color: "#f0a020" },
+        { val: "Cape Horn", label: "bypass", color: "#c8a96e" }
       ]
     },
     {
@@ -1339,7 +1376,7 @@
       lat: 41.1, lng: 29.0, type: "controlled",
       labelDx: 12, labelDy: -8, anchor: "start",
       region: "Turkey \u00b7 Black Sea / Mediterranean",
-      desc: "Turkey controls passage under the 1936 Montreux Convention. Pivotal gatekeeper between Black Sea and Mediterranean.",
+      desc: "Turkey controls passage under the 1936 Montreux Convention. Transit continues in 2026, with extra safety checks on selected Russia-bound vessels.",
       image: "images/bosphorus.jpg",
       stats: [
         { val: "3%", label: "of global oil", color: "#4a9eff" },
@@ -1352,12 +1389,12 @@
       lat: -34.4, lng: 18.5, type: "controlled",
       labelDx: 12, labelDy: -8, anchor: "start",
       region: "South Africa \u00b7 Atlantic / Indian Ocean",
-      desc: "The world's primary bypass route when Middle East corridors are blocked. Adds ~2 weeks and thousands of miles.",
+      desc: "In 2026 this became the default Asia–Europe routing rather than the fallback. Adds ~2 weeks and thousands of miles.",
       image: "images/cape-good-hope.jpg",
       stats: [
         { val: "+2 wks", label: "vs. Suez", color: "#4a9eff" },
         { val: "+$1-2M", label: "fuel cost", color: "#4a9eff" },
-        { val: "Suez / Bab el-Mandeb", label: "bypass route", color: "#c8a96e" }
+        { val: "Suez / Bab el-Mandeb", label: "bypasses", color: "#c8a96e" }
       ]
     },
     {
@@ -1365,10 +1402,10 @@
       lat: 55.5, lng: 11.5, type: "controlled",
       labelDx: 12, labelDy: -8, anchor: "start",
       region: "Baltic Sea outlet \u00b7 Denmark / Sweden",
-      desc: "The only maritime exit for Baltic Sea nations. Critical for Russian, Nordic, and European trade flows.",
+      desc: "The only maritime exit for Baltic Sea nations. ~175 shadow-fleet tankers transit monthly; Denmark expanded inspections in 2026.",
       image: "images/danish-straits.jpg",
       stats: [
-        { val: "Baltic", label: "exit", color: "#4a9eff" },
+        { val: "~175/mo", label: "shadow fleet", color: "#4a9eff" },
         { val: "NATO", label: "controlled", color: "#4a9eff" },
         { val: "None", label: "bypass", color: "#c8a96e" }
       ]
