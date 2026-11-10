@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Maritime Chokepoints — Interactive Map & Strategic Analysis</title>
-<meta name="description" content="Interactive reference guide to the world's most critical maritime chokepoints, updated August 2026 — with the Strait of Hormuz closed and the Red Sea under a Houthi blockade. Explore an interactive D3.js map of 18 strategic straits and waterways that control global trade, energy supply chains, and naval power projection.">
+<meta name="description" content="Interactive reference guide to the world's most critical maritime chokepoints, updated November 2026 — with the Strait of Hormuz closed and the Red Sea under a Houthi blockade. Explore an interactive D3.js map of 18 strategic straits and waterways that control global trade, energy supply chains, and naval power projection.">
 <meta name="keywords" content="maritime chokepoints, Strait of Hormuz closure, Strait of Malacca, Suez Canal, Panama Canal, global trade routes, shipping lanes, geopolitics, naval strategy, maritime security, Bab el-Mandeb, Bosphorus, Gibraltar, Cape of Good Hope, Red Sea blockade">
 <meta name="author" content="Ryan Shook">
 <link rel="canonical" href="https://ryanshook.org/chokepoints/">
@@ -12,7 +12,7 @@
 <!-- Open Graph -->
 <meta property="og:type" content="article">
 <meta property="og:title" content="Global Maritime Chokepoints — Interactive Map & Strategic Analysis">
-<meta property="og:description" content="Interactive reference guide to 18 strategic straits and waterways that control global trade, energy supply chains, and naval power projection. Updated August 2026: Hormuz closed, Red Sea blockaded, Panama drafting down.">
+<meta property="og:description" content="Interactive reference guide to 18 strategic straits and waterways that control global trade, energy supply chains, and naval power projection. Updated November 2026: Hormuz closed, Red Sea blockaded, Panama draft partially restored after October rain.">
 <meta property="og:url" content="https://ryanshook.org/chokepoints/">
 <meta property="og:site_name" content="Ryan Shook">
 <meta property="og:image" content="https://ryanshook.org/chokepoints/images/og-map.png">
@@ -20,7 +20,7 @@
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Global Maritime Chokepoints — Interactive Map & Analysis">
-<meta name="twitter:description" content="Interactive reference guide to 18 strategic straits and waterways that control global trade and energy supply chains. Updated August 2026.">
+<meta name="twitter:description" content="Interactive reference guide to 18 strategic straits and waterways that control global trade and energy supply chains. Updated November 2026.">
 <meta name="twitter:site" content="@ryanshook">
 <meta name="twitter:image" content="https://ryanshook.org/chokepoints/images/og-map.png">
 
@@ -40,7 +40,7 @@
   "headline": "Global Maritime Chokepoints — Interactive Map & Strategic Analysis",
   "description": "Interactive reference guide to the world's most critical maritime chokepoints, featuring an interactive map of 18 strategic straits and waterways.",
   "datePublished": "2026-03-12",
-  "dateModified": "2026-08-12",
+  "dateModified": "2026-11-09",
   "author": {
     "@type": "Person",
     "name": "Ryan Shook",
@@ -787,7 +787,7 @@
     <h1>Global Maritime<br><em>Chokepoints</em></h1>
     <div class="header-meta">
       <span class="status-badge"><span class="status-dot"></span>HORMUZ CLOSED · RED SEA BLOCKADED</span>
-      <p class="date-stamp">Updated 12 August 2026</p>
+      <p class="date-stamp">Updated 9 November 2026</p>
     </div>
     <div class="header-meta" style="margin-top:1rem;">
       <p class="date-stamp">A reference guide to the world's most strategic waterways</p>
@@ -805,8 +805,8 @@
         <button type="button" id="zoom-out" title="Zoom out">−</button>
       </div>
       <div class="map-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#ff4d4d;"></div>Disrupted<div class="legend-tip"><div class="legend-tip-name">Disrupted</div><div class="legend-tip-label">Closed or under blockade</div><div class="legend-tip-desc">Traffic is materially blocked right now, not merely at risk. As of August 2026 this covers the Strait of Hormuz, closed since March, and Bab el-Mandeb under a Houthi blockade.</div></div></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#f0a020;"></div>Restricted<div class="legend-tip"><div class="legend-tip-name">Restricted</div><div class="legend-tip-label">Open, but not running normally</div><div class="legend-tip-desc">Passable with reduced throughput — from draft limits, security caution, or collapsed demand. The Suez Canal and Panama Canal are both here in August 2026, for opposite reasons.</div></div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ff4d4d;"></div>Disrupted<div class="legend-tip"><div class="legend-tip-name">Disrupted</div><div class="legend-tip-label">Closed or under blockade</div><div class="legend-tip-desc">Traffic is materially blocked right now, not merely at risk. As of November 2026 this covers the Strait of Hormuz, closed since March, and Bab el-Mandeb under a Houthi blockade.</div></div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f0a020;"></div>Restricted<div class="legend-tip"><div class="legend-tip-name">Restricted</div><div class="legend-tip-label">Open, but not running normally</div><div class="legend-tip-desc">Passable with reduced throughput — from draft limits, security caution, or collapsed demand. The Suez Canal and Panama Canal are both here in November 2026, for opposite reasons.</div></div></div>
         <div class="legend-item"><div class="legend-dot" style="background:#4a9eff;"></div>Primary · Open<div class="legend-tip"><div class="legend-tip-name">Primary Chokepoint</div><div class="legend-tip-label">No cost-effective alternative</div><div class="legend-tip-desc">Straits and canals where closure forces massive detours or cuts off access to entire seas and resource regions. These are the highest-consequence bottlenecks in global trade — and currently operating normally.</div></div></div>
         <div class="legend-item"><div class="legend-dot" style="background:#c8a96e;opacity:0.6;"></div>Secondary<div class="legend-tip"><div class="legend-tip-name">Secondary Chokepoint</div><div class="legend-tip-label">Alternatives exist</div><div class="legend-tip-desc">Passages that have bypass routes, but disruption would still cause notable detours, added shipping costs, and supply chain delays across affected regions.</div></div></div>
       </div>
@@ -817,7 +817,7 @@
 
   <!-- Current Situation: live status summary. Update alongside the status tags below. -->
   <div class="highlight-box">
-    <strong>Situation as of 12 August 2026.</strong> The <strong>Strait of Hormuz</strong> has been closed to normal commercial traffic since Iran declared it shut on 4 March 2026, following the start of Operation Epic Fury on 28 February. Transits are running roughly 90% below the pre-crisis baseline — 84 vessels in the week to 2 August, against a historical average near 138 per day — with more than 70 ships still stranded inside the Gulf and war-risk premiums up four- to six-fold. In the Red Sea, a Houthi maritime blockade of Saudi Arabia has cut <strong>Bab el-Mandeb</strong> traffic 24%, and tanker transits 42%. Asia–Europe shipping has shifted decisively onto the <strong>Cape of Good Hope</strong>, and the <strong>Panama Canal</strong> is stepping drafts down again as a strengthening El Niño draws down Gatun Lake. Brent crude peaked at $126 in March and sits near $88.
+    <strong>Situation as of 9 November 2026.</strong> The <strong>Strait of Hormuz</strong> remains closed to normal commercial traffic, as it has been since Iran declared it shut on 4 March 2026, following the start of Operation Epic Fury on 28 February. Transits are still running roughly 90% below the pre-crisis baseline, attacks on shipping continued through October, and several hundred vessels are waiting outside the strait; Tehran says it could reopen within days if Washington meets its conditions, and Washington calls those conditions unacceptable. In the Red Sea, the Houthi maritime blockade of Saudi Arabia declared in July remains in force and Houthi forces hold Yemen's Red Sea coast, but carriers have begun returning: <strong>Bab el-Mandeb</strong> transits are recovering from their lows while still running far below normal, and <strong>Suez</strong> just posted its best revenue month since 2023. Asia–Europe shipping still leans on the <strong>Cape of Good Hope</strong> for most sailings. The <strong>Panama Canal</strong> has eased the other way: after cutting the Neopanamax draft to 14.48m in early September, the ACP raised it back to 14.94m on 28 September, and October rain returned Gatun Lake to its seasonal average — though the watershed deficit is not over and a strong El Niño is expected into early 2027. Brent crude peaked at $126 in March, and settled at $92.57 on 9 November after a steep fall on hopes of a US–Iran deal that has not yet been reached.
   </div>
 
   <!-- Primary Chokepoints: 9 critical straits and canals with detailed analysis -->
@@ -864,9 +864,9 @@
         <span class="chokepoint-tag tag-warning">REDUCED</span>
       </div>
       <div class="chokepoint-region">Egypt · Mediterranean / Red Sea</div>
-      <div class="chokepoint-desc">Man-made canal connecting Mediterranean to Red Sea. Physically open and never blocked, but starved of traffic: carriers began cautiously returning in early 2026 before renewed Red Sea attacks pushed them back onto the Cape route. Volumes are recovering off a low base — about 275 transits a week this August, and 1,182 vessels in April for roughly $425M in monthly tolls. The canal's problem is downstream: when Bab el-Mandeb is unsafe, the Suez shortcut is worthless, because ships must round Africa regardless.</div>
+      <div class="chokepoint-desc">Man-made canal connecting Mediterranean to Red Sea. Physically open and never blocked, but starved of traffic while the Red Sea stayed unsafe. The recovery is now real: 1,490 vessels transited in October 2026 for $724M in tolls — the canal's best revenue month since 2023, with transits up 32% on a year earlier — as container lines return on a growing share of Asia–Europe sailings. Volumes are still well below the pre-crisis norm, and the canal's problem remains downstream: when Bab el-Mandeb is unsafe, the Suez shortcut is worthless, because ships must round Africa regardless.</div>
       <div class="chokepoint-stats">
-        <div class="cp-stat"><div class="cp-stat-val warn">~275</div><div class="cp-stat-label">transits/week</div></div>
+        <div class="cp-stat"><div class="cp-stat-val warn">1,490</div><div class="cp-stat-label">transits (Oct 2026)</div></div>
         <div class="cp-stat"><div class="cp-stat-val warn">12%</div><div class="cp-stat-label">of global trade (normal)</div></div>
         <div class="cp-stat"><div class="cp-stat-val warn">~$7B</div><div class="cp-stat-label">FY2025 revenue</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Cape of Good Hope</div><div class="cp-stat-label">bypass route</div></div>
@@ -880,10 +880,10 @@
         <span class="chokepoint-tag tag-critical">BLOCKADED</span>
       </div>
       <div class="chokepoint-region">Red Sea Gateway · Yemen / Djibouti / Eritrea</div>
-      <div class="chokepoint-desc">The southern gateway to the Suez Canal, and the clearest case of a chokepoint held hostage by a non-state actor. Yemen's Houthis resumed attacks on 28 February 2026 and have since declared a maritime blockade of Saudi Arabia, deploying missiles and drones against shipping and pushing operations north toward Saudi crude terminals. Transits fell 24% — 354 vessels the week before the blockade, 269 the week after — with tanker traffic down 42%. Saudi exports are coping through lighter loadings and the Sumed pipeline.</div>
+      <div class="chokepoint-desc">The southern gateway to the Suez Canal, and the clearest case of a chokepoint held hostage by a non-state actor. Yemen's Houthis resumed attacks in 2026 and on 20 July declared a maritime blockade of Saudi Arabia; in September their forces seized Mokha and Yemen's remaining Red Sea coast, including the islands inside the strait itself. The blockade remains in force and traffic is still running roughly 60% below pre-crisis levels, though container lines are returning — September's 314 boxship crossings were the most since the attacks began. Saudi exports are coping through Yanbu loadings and the Sumed pipeline.</div>
       <div class="chokepoint-stats">
-        <div class="cp-stat"><div class="cp-stat-val danger">−24%</div><div class="cp-stat-label">transits</div></div>
-        <div class="cp-stat"><div class="cp-stat-val danger">−42%</div><div class="cp-stat-label">tanker transits</div></div>
+        <div class="cp-stat"><div class="cp-stat-val danger">−60%</div><div class="cp-stat-label">traffic vs. pre-crisis</div></div>
+        <div class="cp-stat"><div class="cp-stat-val danger">8.6/day</div><div class="cp-stat-label">tanker transits (late Oct)</div></div>
         <div class="cp-stat"><div class="cp-stat-val danger">18 mi</div><div class="cp-stat-label">width</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Cape of Good Hope</div><div class="cp-stat-label">bypass route</div></div>
       </div>
@@ -896,9 +896,9 @@
         <span class="chokepoint-tag tag-warning">RESTRICTED</span>
       </div>
       <div class="chokepoint-region">Central America · Atlantic / Pacific</div>
-      <div class="chokepoint-desc">The primary Atlantic-Pacific shortcut, carrying ~5% of global trade. Its locks run on freshwater from Gatun Lake, making it the one major chokepoint constrained by weather rather than politics. It fully recovered from the 2023–24 drought — FY2025 revenue rose 14.4% to $5.7B on 13,404 transits — but a strengthening El Niño has forced a fresh series of step-downs: Neopanamax draft cut to 14.78m on 15 August, 14.63m on 26 August, and 14.48m from 3 September. Transit slots are being held near 36 a day; ships simply carry less.</div>
+      <div class="chokepoint-desc">The primary Atlantic-Pacific shortcut, carrying ~5% of global trade. Its locks run on freshwater from Gatun Lake, making it the one major chokepoint constrained by weather rather than politics. It fully recovered from the 2023–24 drought — FY2025 revenue rose 14.4% to $5.7B on 13,404 transits — but a strengthening El Niño forced a fresh series of step-downs over the summer, bottoming out at a 14.48m Neopanamax draft on 3 September and 32 daily transit slots. Near-average rain then let the ACP reverse course: on 28 September it raised the draft back to 14.94m (49.0 ft), and daily slots rose to 33 from 15 October. October rain returned Gatun Lake to its seasonal average, but the watershed is still in deficit and forecasters expect a strong El Niño through the early-2027 dry season.</div>
       <div class="chokepoint-stats">
-        <div class="cp-stat"><div class="cp-stat-val warn">14.48 m</div><div class="cp-stat-label">max draft (Sept)</div></div>
+        <div class="cp-stat"><div class="cp-stat-val warn">14.94 m</div><div class="cp-stat-label">max draft (Nov)</div></div>
         <div class="cp-stat"><div class="cp-stat-val warn">5%</div><div class="cp-stat-label">of global trade</div></div>
         <div class="cp-stat"><div class="cp-stat-val warn">13,404</div><div class="cp-stat-label">FY2025 transits</div></div>
         <div class="cp-stat"><div class="cp-stat-val">Cape Horn / Magellan</div><div class="cp-stat-label">bypass route</div></div>
@@ -1107,7 +1107,7 @@
   <!-- Page Footer: Attribution and data sources -->
   <footer>
     <p class="footer-note">Created by <a href="https://ryanshook.org" style="color:var(--accent);text-decoration:none;">Ryan Shook</a> · <a href="mailto:ryan@ryanshook.org?subject=Maritime%20Chokepoints%20Edit" style="color:var(--accent);text-decoration:none;">Suggest an Edit</a></p>
-    <p class="footer-note">Last updated 12 August 2026 · Sources: EIA, IEA, UNCTAD, Lloyd's List Intelligence, Suez Canal Authority, Panama Canal Authority (ACP)</p>
+    <p class="footer-note">Last updated 9 November 2026 · Sources: EIA, IEA, UNCTAD, Lloyd's List Intelligence, Suez Canal Authority, Panama Canal Authority (ACP)</p>
   </footer>
 
 </main>
@@ -1324,10 +1324,10 @@
       lat: 30.5, lng: 32.3, type: "restricted",
       labelDx: 12, labelDy: -8, anchor: "start",
       region: "Egypt \u00b7 Mediterranean / Red Sea",
-      desc: "Open but starved of traffic while the Red Sea stays unsafe. Running ~275 transits a week, far below its ~12%-of-global-trade norm.",
+      desc: "Open, and recovering as carriers return: 1,490 transits in October 2026, its best revenue month since 2023 — still below its ~12%-of-global-trade norm.",
       image: "images/suez.jpg",
       stats: [
-        { val: "~275", label: "transits/week", color: "#f0a020" },
+        { val: "1,490", label: "transits (Oct)", color: "#f0a020" },
         { val: "12%", label: "of trade (normal)", color: "#f0a020" },
         { val: "Cape of Good Hope", label: "bypass route", color: "#c8a96e" }
       ]
@@ -1337,11 +1337,11 @@
       lat: 12.6, lng: 43.3, type: "critical",
       labelDx: 12, labelDy: 4, anchor: "start",
       region: "Red Sea Gateway \u00b7 Yemen / Djibouti / Eritrea",
-      desc: "Under a Houthi maritime blockade of Saudi Arabia. Transits down 24%, tankers down 42%. When it closes, the Suez route becomes useless.",
+      desc: "Under a Houthi maritime blockade of Saudi Arabia, in force since July 2026. Traffic still ~60% below pre-crisis levels. When it closes, the Suez route becomes useless.",
       image: "images/bab-el-mandeb.jpg",
       stats: [
-        { val: "\u221224%", label: "transits", color: "#ff4d4d" },
-        { val: "\u221242%", label: "tankers", color: "#ff4d4d" },
+        { val: "\u221260%", label: "traffic vs. pre-crisis", color: "#ff4d4d" },
+        { val: "8.6/day", label: "tanker transits", color: "#ff4d4d" },
         { val: "Cape of Good Hope", label: "bypass route", color: "#c8a96e" }
       ]
     },
@@ -1350,10 +1350,10 @@
       lat: 9.1, lng: -79.7, type: "restricted",
       labelDx: 12, labelDy: -8, anchor: "start",
       region: "Central America \u00b7 Atlantic / Pacific",
-      desc: "Open, but stepping drafts down again as El Ni\u00f1o draws down Gatun Lake. Neopanamax limit falls to 14.48m by 3 September.",
+      desc: "Open, with draft and slot limits partially eased after October rain: Neopanamax draft restored to 14.94m on 28 September, 33 daily slots from 15 October. The watershed deficit persists.",
       image: "images/panama.jpg",
       stats: [
-        { val: "14.48 m", label: "max draft (Sept)", color: "#f0a020" },
+        { val: "14.94 m", label: "max draft (Nov)", color: "#f0a020" },
         { val: "13,404", label: "FY2025 transits", color: "#f0a020" },
         { val: "Cape Horn", label: "bypass", color: "#c8a96e" }
       ]
